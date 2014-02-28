@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/10/2010 06:02:38 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Modules" table="MODULES">
+    <id name="id" type="int">
+      <column name="ID" precision="22" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">modules_seq</param>
+      </generator>
+    </id>
+    <property name="name" type="string">
+      <column length="50" name="NAME" not-null="true"/>
+    </property>
+    <property name="notes" type="string">
+      <column length="300" name="NOTES"/>
+    </property>
+    <set inverse="true" name="modulesRoleses">
+      <key>
+        <column name="MODULE_ID" not-null="true" precision="5" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.ModulesRoles"/>
+    </set>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 14/12/2010 07:03:56 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Investigation" table="INVESTIGATION">
+    <id name="id" type="int">
+      <column name="ID" precision="3" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">investigation_seq</param>
+      </generator>
+    </id>
+    <property name="name" type="string">
+      <column length="101" name="NAME"/>
+    </property>
+    <set inverse="true" name="patientsDocs">
+      <key>
+        <column name="INVESTIGATION" precision="3" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.PatientsDoc"/>
+    </set>
+  </class>
+</hibernate-mapping>

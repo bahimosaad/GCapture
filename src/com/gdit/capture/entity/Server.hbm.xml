@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Server" table="SERVER">
+    <id name="id" type="long">
+      <column name="ID" precision="1" scale="0"/>
+      <generator class="sequence">
+        <param name="HIBERNATE_SEQUENCE"/>
+      </generator>
+    </id>
+    <property name="ip" type="string">
+      <column length="50" name="ip"/>
+    </property>
+    <property name="user" type="string">
+      <column length="50" name="users"/>
+    </property>
+    <property name="pwd" type="string">
+      <column length="50" name="pwd"/>
+    </property>
+    <property name="domain" type="string">
+      <column length="50" name="DOMAIN"/>
+    </property>
+  </class>
+</hibernate-mapping>

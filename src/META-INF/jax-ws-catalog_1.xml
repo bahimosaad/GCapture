@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8086/capture/syncFilesService?WSDL" uri="wsdl/localhost_8086/capture/syncFilesService.wsdl"/>
+    <system systemId="http://localhost:8086/capture/syncFilesService?xsd=1" uri="wsdl/localhost_8086/capture/syncFilesService.xsd_1.xsd"/>
+    <system systemId="http://localhost/leadToolsService32/compresstotiff.asmx" uri="wsdl/localhost/leadToolsService32/compresstotiff.asmx"/>
+    <system systemId="http://localhost/leadToolsService32/compresstotiff.asmx?wsdl" uri="wsdl/localhost/leadToolsService32/compresstotiff.asmx.wsdl"/>
+    <system systemId="http://localhost/leadToolsService32/compresstotiff.asmx?WSDL" uri="wsdl/localhost/leadToolsService32/compresstotiff.asmx.wsdl"/>
+    <system systemId="http://localhost/lead/compressToTiff.asmx?wsdl" uri="wsdl/localhost/lead/compressToTiff.asmx.wsdl"/>
+    <system systemId="http://localhost/lead/compresstotiff.asmx" uri="wsdl/localhost/lead/compresstotiff.asmx"/>
+    <system systemId="http://localhost/lead/compresstotiff.asmx?wsdl" uri="wsdl/localhost/lead/compresstotiff.asmx.wsdl"/>
+    <system systemId="http://localhost/lead/compresstotiff.asmx?WSDL" uri="wsdl/localhost/lead/compresstotiff.asmx.wsdl"/>
+    <system systemId="file:/C:/Documents%20and%20Settings/admin/Desktop/compresstotiff.asmx.wsdl" uri="wsdl/compresstotiff.asmx.wsdl"/>
+    <system systemId="file:/C:/Documents%20and%20Settings/admin/Desktop/compresstotiff.wsdl" uri="wsdl/compresstotiff.wsdl"/>
+</catalog>

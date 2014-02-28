@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/10/2010 01:01:58 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.UsersAudit" table="USERS_AUDIT">
+    <id name="id" type="long">
+      <column name="ID" precision="9" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">users_audit_seq</param>
+      </generator>
+    </id>
+    <property name="userId" type="int">
+      <column name="USER_ID" precision="5" scale="0"/>
+    </property>
+    <property name="batchId" type="long">
+      <column name="BATCH_ID" precision="9" scale="0"/>
+    </property>
+    <property name="action" type="int">
+      <column name="action" precision="3" scale="0"/>
+    </property>
+    <property name="moduleId" type="int">
+      <column name="MODULE_ID" precision="5" scale="0"/>
+    </property>
+    <property name="auditDate" type="java.util.Date">
+      <column name="AUDIT_DATE"/>
+    </property>
+    <property name="locked" type="boolean">
+      <column name="LOCKED" precision="1" scale="0"/>
+    </property>
+    <property name="status" type="int">
+      <column name="STATUS" precision="3" scale="0"/>
+    </property>
+  </class>
+</hibernate-mapping>

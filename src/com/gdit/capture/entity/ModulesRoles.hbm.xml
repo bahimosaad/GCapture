@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/10/2010 06:02:38 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.ModulesRoles" table="MODULES_ROLES">
+    <composite-id class="com.gdit.capture.entity.ModulesRolesId" name="id">
+      <key-property name="moduleId" type="int">
+        <column name="MODULE_ID" precision="5" scale="0"/>
+      </key-property>
+      <key-property name="roleId" type="int">
+        <column name="ROLE_ID" precision="5" scale="0"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.gdit.capture.entity.Roles" fetch="join" cascade="all" name="roles" insert="false"  update="false" >
+      <column name="ROLE_ID" not-null="true" precision="5" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Modules" fetch="join" cascade="all" name="modules" insert="false"  update="false">
+      <column name="MODULE_ID" not-null="true" precision="5" scale="0"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

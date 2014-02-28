@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15/12/2010 08:54:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.NsecHejraToGregorian" table="NSEC_HEJRA_TO_GREGORIAN">
+    <composite-id class="com.gdit.capture.entity.NsecHejraToGregorianId" name="id">
+      <key-property name="hejraDd" type="int">
+        <column name="HEJRA_DD" precision="2" scale="0"/>
+      </key-property>
+      <key-property name="hejraMm" type="int">
+        <column name="HEJRA_MM" precision="2" scale="0"/>
+      </key-property>
+      <key-property name="hejraYyyy" type="int">
+        <column name="HEJRA_YYYY" precision="4" scale="0"/>
+      </key-property>
+      <key-property name="gregorianDate" type="date">
+        <column length="7" name="GREGORIAN_DATE"/>
+      </key-property>
+    </composite-id>
+  </class>
+</hibernate-mapping>

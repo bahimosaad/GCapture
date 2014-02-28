@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Capture" table="CAPTURE">
+    <id name="id" type="long">
+      <column name="ID" precision="5" scale="0"/>
+      
+      <generator class="sequence">
+        <param name="sequence">capture_seq</param>
+      </generator>
+      
+    </id>
+    <many-to-one class="com.gdit.capture.entity.Users" fetch="select" name="users">
+      <column name="USER_ID" precision="5" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Category" fetch="join" name="category">
+      <column name="CATEGORY_ID" precision="22" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Rep" fetch="join" name="rep">
+      <column name="REP_ID" precision="22" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Capture" fetch="join" name="capture">
+      <column name="PARENT_ID" precision="10" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Disk" fetch="join" name="disk">
+      <column name="DISK_ID" precision="3" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Computers" fetch="join" name="computer">
+      <column name="COMPUTER_ID" precision="5" scale="0"/>
+    </many-to-one>
+    <property name="type" type="int">
+      <column name="TYPE" precision="3" scale="0"/>
+    </property>
+    <property name="name" type="string">
+      <column length="100" name="NAME"/>
+    </property>
+    <property name="barcode" type="string">
+      <column length="20" name="barcode"/>
+    </property>
+    <property name="path" type="string">
+      <column length="100" name="PATH"/>
+    </property>
+    <property name="deleted" type="boolean">
+      <column name="DELETED" precision="1" scale="0"/>
+    </property>
+    <property name="blancked" type="boolean">
+      <column name="BLANCKED" precision="1" scale="0"/>
+    </property>
+    <property name="locked" type="boolean">
+      <column name="LOCKED" precision="1" scale="0"/>
+    </property>
+    <property name="refused" type="boolean">
+      <column name="REFUSED" precision="1" scale="0"/>
+    </property>
+    <property name="refuseNote" type="string">
+      <column length="200" name="refuse_note"/>
+    </property>
+    <property name="saved" type="boolean">
+      <column name="SAVED" precision="1" scale="0"/>
+    </property>
+    <property name="createdDate" type="java.util.Date">
+      <column   name="CREATED_DATE"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" precision="3" scale="0"/>
+    </property>
+    <property name="copyStatus" type="int">
+      <column name="COPY_STATUS" precision="3" scale="0"/>
+    </property>
+    <property name="barcoded" type="boolean">
+      <column name="BARCODED" precision="1" scale="0"/>
+    </property>
+    <set inverse="true" name="captures" fetch="join" order-by="id">
+      <key>
+        <column name="PARENT_ID" precision="10" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.Capture"/>
+    </set>
+  </class>
+</hibernate-mapping>

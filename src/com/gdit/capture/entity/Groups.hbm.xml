@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/10/2010 01:01:58 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Groups" table="GROUPS">
+    <id name="id" type="int">
+      <column name="ID" precision="22" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">groups_seq</param>
+      </generator>
+    </id>
+    <property name="groupName" type="string">
+      <column length="50" name="GROUP_NAME"/>
+    </property>
+    <set cascade="all" inverse="true" name="rolesGroupses">
+      <key>
+        <column name="GROUP_ID" not-null="true" precision="22" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.RolesGroups"/>
+    </set>
+    <set cascade="all" inverse="true" name="usersGroupses">
+      <key>
+        <column name="GROUP_ID" not-null="true" precision="22" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.UsersGroups"/>
+    </set>
+  </class>
+</hibernate-mapping>

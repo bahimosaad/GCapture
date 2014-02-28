@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/10/2010 01:01:58 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.BatchLog" table="Batch_Log">
+    <id name="batchId" type="long">
+      <column name="Batch_Id" precision="10" scale="0"/>
+    </id>
+    <property name="homeDir" type="string">
+      <column length="200" name="HOME_DIR"/>
+    </property>
+    <property name="serverDir" type="string">
+      <column length="200" name="SERVER_DIR"/>
+    </property>
+    <property name="computerName" type="string">
+      <column length="100" name="COMPUTER_NAME"/>
+    </property>
+    <property name="locked" type="java.lang.Boolean">
+      <column name="LOCKED" precision="1" scale="0"/>
+    </property>
+    <property name="status" type="int">
+      <column name="STATUS" precision="2" scale="0"/>
+    </property>
+  </class>
+</hibernate-mapping>

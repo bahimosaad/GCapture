@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Disk" table="DISK">
+    <id name="id" type="int">
+      <column name="ID" precision="3" scale="0"/>
+      
+    </id>
+    <many-to-one class="com.gdit.capture.entity.Rep" fetch="join" name="rep">
+      <column name="REP_ID" precision="22" scale="0"/>
+    </many-to-one>
+    <property name="path" type="string">
+      <column length="200" name="PATH"/>
+    </property>
+    <property name="viewPath" type="string">
+      <column length="100" name="VIEW_PATH"/>
+    </property>
+    <property name="name" type="string">
+      <column length="50" name="NAME"/>
+    </property>
+    <property name="dflt" type="boolean">
+      <column precision="1" scale="0" name="DFLT"/>
+    </property>
+    
+    <set inverse="true" name="captures">
+      <key>
+        <column name="disk_id" precision="3" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.Capture"/>
+    </set>
+    
+  </class>
+</hibernate-mapping>

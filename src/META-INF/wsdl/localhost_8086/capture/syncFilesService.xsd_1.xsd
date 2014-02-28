@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.1-hudson-28-. --><xs:schema xmlns:tns="http://service.capture.gdit.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.capture.gdit.com/">
+
+<xs:element name="barcodeImages" type="tns:barcodeImages" />
+
+<xs:element name="barcodeImagesResponse" type="tns:barcodeImagesResponse" />
+
+<xs:element name="changeScannerSetting" type="tns:changeScannerSetting" />
+
+<xs:element name="changeScannerSettingResponse" type="tns:changeScannerSettingResponse" />
+
+<xs:element name="createFile" type="tns:createFile" />
+
+<xs:element name="createFileResponse" type="tns:createFileResponse" />
+
+<xs:element name="createSharedFile" type="tns:createSharedFile" />
+
+<xs:element name="createSharedFileResponse" type="tns:createSharedFileResponse" />
+
+<xs:element name="editProfile" type="tns:editProfile" />
+
+<xs:element name="editProfileResponse" type="tns:editProfileResponse" />
+
+<xs:element name="recieveFile" type="tns:recieveFile" />
+
+<xs:element name="recieveFileResponse" type="tns:recieveFileResponse" />
+
+<xs:element name="sendFile" type="tns:sendFile" />
+
+<xs:element name="sendFileResponse" type="tns:sendFileResponse" />
+
+<xs:element name="sendSetting" type="tns:sendSetting" />
+
+<xs:element name="sendSettingResponse" type="tns:sendSettingResponse" />
+
+<xs:element name="sendSystemOptions" type="tns:sendSystemOptions" />
+
+<xs:element name="sendSystemOptionsResponse" type="tns:sendSystemOptionsResponse" />
+
+<xs:element name="sync" type="tns:sync" />
+
+<xs:element name="syncResponse" type="tns:syncResponse" />
+
+<xs:element name="writeSystemOptions" type="tns:writeSystemOptions" />
+
+<xs:element name="writeSystemOptionsResponse" type="tns:writeSystemOptionsResponse" />
+
+<xs:complexType name="changeScannerSetting">
+<xs:sequence>
+<xs:element name="arg0" type="xs:base64Binary" nillable="true" minOccurs="0" />
+<xs:element name="arg1" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="changeScannerSettingResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="editProfile">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+<xs:element name="arg1" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="editProfileResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="writeSystemOptions">
+<xs:sequence>
+<xs:element name="arg0" type="xs:base64Binary" nillable="true" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="writeSystemOptionsResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="sendFile">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sendFileResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:base64Binary" nillable="true" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createSharedFile">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createSharedFileResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="sync">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+<xs:element name="arg1" type="xs:string" minOccurs="0" />
+<xs:element name="arg2" type="xs:string" minOccurs="0" />
+<xs:element name="arg3" type="xs:long" />
+<xs:element name="arg4" type="xs:string" minOccurs="0" />
+<xs:element name="arg5" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="syncResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sendSystemOptions">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="sendSystemOptionsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:base64Binary" nillable="true" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recieveFile">
+<xs:sequence>
+<xs:element name="arg0" type="xs:base64Binary" nillable="true" minOccurs="0" />
+<xs:element name="arg1" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recieveFileResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createFile">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createFileResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="barcodeImages">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+<xs:element name="arg1" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="barcodeImagesResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="sendSetting">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sendSettingResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

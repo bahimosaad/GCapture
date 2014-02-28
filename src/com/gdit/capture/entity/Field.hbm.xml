@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Field" table="filed_data">
+    <id name="id" type="java.lang.Long">
+      <column name="F_ID" precision="10" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">FIELD_SEQ</param>
+      </generator>
+    </id>
+    <property name="name" type="string">
+      <column name="F_NAME"/>
+    </property>
+    <property name="alias" type="string">
+      <column name="F_ALIAS"/>
+    </property>
+    <property name="type" type="string">
+      <column name="F_TYPE"/>
+    </property>
+    <property name="dateFormat" type="string">
+      <column name="F_DATE_FORMAT"/>
+    </property>
+    <set cascade="all" name="listData" table="FIELD_TYPE_LIST_DATA">
+      <key column="F_ID"/>
+      <element column="DATA_LIST" type="string"/>
+    </set>
+    <set name="associatedCategories" table="FIELD_CATEGORIES">
+      <key column="F_ID"/>
+      <many-to-many class="com.gdit.capture.entity.Category" column="ID"/>
+    </set>
+  </class>
+</hibernate-mapping>

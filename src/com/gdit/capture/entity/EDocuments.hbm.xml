@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.EDocuments" table="E_DOCUMENTS">
+    <id name="docId" type="long">
+      <column name="DOC_ID" precision="10" scale="0"/> 
+    </id>
+    <property name="batchId" type="long">
+      <column name="BATCH_ID" precision="10" scale="0"/>
+    </property>
+    <property name="dId" type="long">
+      <column name="D_ID" precision="10" scale="0"/>
+    </property>
+    <property name="lineNo" type="long">
+      <column name="line_No" precision="9" scale="0"/>
+    </property>
+    <property name="jrnlDate" type="string">
+      <column length="30" name="JRNL_DATE"/>
+    </property>
+    <property name="barcode" type="string">
+      <column length="100" name="barcode"/>
+    </property>
+     <property name="yer" type="string">
+      <column length="10" name="YER"/>
+    </property>
+    <property name="jrnlType" type="string">
+      <column name="JRNL_TYPE" length="20" />
+    </property>
+    <property name="fileNo" type="string">
+      <column name="FILE_NO" length="100" />
+    </property>
+    <property name="boxNo" type="string">
+      <column name="BOX_NO" length="100" />
+    </property>
+    <property name="corridorNo" type="string">
+      <column name="CORRIDOR_NO" length="100" />
+    </property>
+    <property name="columnNo" type="string">
+      <column name="COLUMN_NO" length="100" />
+    </property>
+    
+  </class>
+</hibernate-mapping>

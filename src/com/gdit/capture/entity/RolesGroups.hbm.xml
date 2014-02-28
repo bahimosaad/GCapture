@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/10/2010 01:01:58 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.RolesGroups" table="ROLES_GROUPS">
+    <composite-id class="com.gdit.capture.entity.RolesGroupsId" name="id">
+      <key-property name="groupId" type="integer">
+        <column name="GROUP_ID" precision="22" scale="0"/>
+      </key-property>
+      <key-property name="rolesId" type="integer">
+        <column name="ROLES_ID" precision="22" scale="0"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.gdit.capture.entity.Roles"  name="roles" insert="false"  update="false" fetch="join" cascade="all">
+      <column name="ROLES_ID" not-null="true" precision="22" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Groups"  insert="false"  update="false" name="groups" fetch="join" cascade="all">
+      <column name="GROUP_ID" not-null="true" precision="22" scale="0"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

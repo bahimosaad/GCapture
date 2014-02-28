@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 05/01/2011 03:33:01 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.UsersCategories" table="USERS_CATEGORIES">
+    <composite-id class="com.gdit.capture.entity.UsersCategoriesId" name="id">
+      <key-property name="userId" type="long">
+        <column name="USER_ID" precision="10" scale="0"/>
+      </key-property>
+      <key-property name="categoryId" type="big_decimal">
+        <column name="CATEGORY_ID" precision="22" scale="0"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.gdit.capture.entity.Users" insert="false"  update="false"  name="users" fetch="join" cascade="all">
+      <column name="USER_ID" not-null="true" precision="10" scale="0"/>
+    </many-to-one>
+    <many-to-one class="com.gdit.capture.entity.Category" insert="false"  update="false"  name="category" fetch="join" cascade="all">
+      <column name="CATEGORY_ID" not-null="true" precision="22" scale="0"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

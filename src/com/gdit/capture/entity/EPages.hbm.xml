@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.EPages" table="E_PAGES">
+    <id name="pageId" type="long">
+      <column name="PAGE_ID" precision="10" scale="0"/> 
+    </id>
+    <property name="batchId" type="long">
+      <column name="BATCH_ID" precision="10" scale="0"/>
+    </property>
+    <property name="dId" type="long">
+      <column name="D_ID" precision="10" scale="0"/>
+    </property>
+    <property name="docId" type="long">
+      <column name="DOC_ID" precision="10" scale="0"/>
+    </property> 
+    <property name="pageName" type="string">
+      <column length="60" name="PAGE_NAME"/>
+    </property>
+     <property name="path" type="string">
+      <column length="200" name="PATH"/>
+    </property>
+    
+    
+  </class>
+</hibernate-mapping>

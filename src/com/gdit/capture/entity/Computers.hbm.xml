@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/10/2010 12:03:51 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Computers" table="COMPUTERS">
+    <id name="id" type="int">
+      <column name="ID" precision="5" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">computers_seq</param>
+      </generator>
+    </id>
+    <property name="name" type="string">
+      <column length="100" name="NAME"/>
+    </property>
+    <property name="ip" type="string">
+      <column length="50" name="IP"/>
+    </property>
+    <property name="scanPath" type="string">
+      <column length="200" name="SCAN_PATH"/>
+    </property>
+    <property name="scanPre" type="string">
+      <column length="50" name="SCAN_PRE"/>
+    </property>
+    <property name="mac" type="string">
+      <column length="100" name="MAC"/>
+    </property>
+    <many-to-one class="com.gdit.capture.entity.Disk" fetch="join" name="disk">
+      <column name="DISK_ID" precision="3" scale="0"/>
+    </many-to-one>
+    
+    <property name="active" type="java.lang.Boolean">
+      <column name="ACTIVE" precision="1" scale="0"/>
+    </property>
+    <set cascade="all" inverse="true" name="computersGroupses">
+      <key>
+        <column name="COMPUTER_ID" not-null="true" precision="5" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.ComputersGroups"/>
+    </set>
+  </class>
+</hibernate-mapping>

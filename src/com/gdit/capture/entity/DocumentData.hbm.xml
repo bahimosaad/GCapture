@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.DocumentData" table="DOCUMENT_DATA">
+    <id column="ID" name="id" type="java.lang.Long">
+      <generator class="sequence">
+        <param name="sequence">DOCUMENT_seq</param>
+      </generator>
+    </id>
+    <property column="FIELD_ID" name="fieldId" type="long"/>
+    <property column="DOC_ID" name="docId" type="long"/>
+    <property column="FIELD_VAL" name="fieldValue" type="string"/>
+  </class>
+</hibernate-mapping>

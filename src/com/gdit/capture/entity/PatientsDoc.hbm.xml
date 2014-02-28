@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 14/12/2010 07:03:56 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.PatientsDoc" table="PATIENTS_DOC">
+    <id name="id" type="long">
+      <column name="ID" precision="10" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">patientsdoc_seq</param>
+      </generator>
+    </id>
+    <many-to-one class="com.gdit.capture.entity.Investigation" fetch="select" name="investigation">
+      <column name="INVESTIGATION" precision="3" scale="0"/>
+    </many-to-one>
+    <property name="docNo" type="string">
+      <column length="50" name="DOC_NO"/>
+    </property>
+    <property name="createdDate" type="java.util.Date">
+      <column name="CREATED_DATE"/>
+    </property>
+    <property name="investigationDate" type="string">
+      <column length="7" name="INVESTIGATION_DATE"/>
+    </property>
+    <property name="img" type="java.lang.Boolean">
+      <column name="IMG" precision="1" scale="0"/>
+    </property>
+    <property name="userId" type="java.lang.Integer">
+      <column name="USER_ID" precision="5" scale="0"/>
+    </property>
+  </class>
+</hibernate-mapping>

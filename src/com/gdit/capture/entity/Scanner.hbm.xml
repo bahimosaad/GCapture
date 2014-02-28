@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Scanner" table="SCANNER">
+    <id name="id" type="int">
+      <column name="ID" precision="3" scale="0"/>
+    </id>
+    <property name="capName" type="string">
+      <column length="50" name="CAP_NAME"/>
+    </property>
+    <property name="capValue" type="string">
+      <column length="50" name="CAP_VALUE"/>
+    </property>
+  </class>
+</hibernate-mapping>

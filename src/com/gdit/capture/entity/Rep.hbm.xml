@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2010 04:34:03 ? by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+  <class name="com.gdit.capture.entity.Rep" table="REP">
+    <id name="id" type="short">
+      <column name="ID" precision="3" scale="0"/>
+      <generator class="sequence">
+        <param name="sequence">rep_seq</param>
+      </generator>
+    </id>
+    <many-to-one class="com.gdit.capture.entity.Rep" fetch="join" name="rep">
+      <column name="PARENT_ID" precision="3" scale="0"/>
+    </many-to-one>
+    <property name="path" type="string">
+      <column length="100" name="PATH"/>
+    </property>
+    <property name="scanPath" type="string">
+      <column length="200" name="SCAN_PATH"/>
+    </property>
+    <property name="protocolPath" type="string">
+      <column length="100" name="PROTOCOL_PATH"/>
+    </property>
+    <property name="name" type="string">
+      <column length="50" name="NAME"/>
+    </property>
+    <property name="blanked" type="boolean">
+      <column name="BLANKED" precision="1" scale="0"/>
+    </property>
+    <set inverse="true" name="reps">
+      <key>
+        <column name="PARENT_ID" precision="3" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.Rep"/>
+    </set>
+    <set inverse="true" name="rolesRepses">
+      <key>
+        <column name="REP_ID" not-null="true" precision="3" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.RolesReps"/>
+    </set>
+    <set inverse="true" name="categories">
+      <key>
+        <column name="REP_ID" precision="3" scale="0"/>
+      </key>
+      <one-to-many class="com.gdit.capture.entity.Category"/>
+    </set>
+  </class>
+</hibernate-mapping>

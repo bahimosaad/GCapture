@@ -1,0 +1,473 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * PatienDocPanel.java
+ *
+ * Created on 15/12/2010, 02:52:28  م
+ */
+package com.gdit.capture.gui;
+
+import com.gdit.capture.entity.Investigation;
+import com.gdit.capture.entity.InvestigationHome;
+import com.gdit.capture.entity.NsecHejraToGregorianHome;
+import com.gdit.capture.entity.PatientsDoc;
+import com.gdit.capture.entity.PatientsDocHome;
+import com.gdit.capture.model.HijriCalendar;
+import com.gdit.capture.model.PrintBarcode;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Bahi
+ */
+public class PatienDocPanel extends javax.swing.JPanel {
+
+    private DefaultComboBoxModel investModel;
+    private int userId;
+    private PatientsDoc doc;
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/gdit/bundle/capture");
+
+    /** Creates new form PatienDocPanel */
+    public PatienDocPanel(int userId) {
+        this.userId = userId;
+        initComponents();
+        init("save");
+    }
+
+     public PatienDocPanel(PatientsDoc doc) {
+        this.doc = doc;
+        initComponents();
+        init("update");
+        show(doc);
+    }
+
+     public void show(PatientsDoc doc){
+         txtDocNo.setText(doc.getDocNo());
+         investigationsCombo.setSelectedItem(doc.getInvestigation().getName());
+         chkImage.setSelected(doc.getImg());
+         String date = doc.getInvestigationDate();
+         String[] formats = date.split("/");
+         txtDay.setText(formats[0]);
+         txtMonth.setText(formats[1]);
+         txtYear.setText(formats[2]);
+     }
+
+    private void init(final String action) {
+        InvestigationHome invDao = new InvestigationHome();
+        investModel = new DefaultComboBoxModel(invDao.getAllInvestigation().toArray());
+        investigationsCombo.setModel(investModel);
+        txtDocNo.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                    investigationsCombo.requestFocus();
+                }
+            }
+        });
+        investigationsCombo.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                    txtDay.requestFocus();
+                }
+            }
+        });
+        txtDay.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                    txtMonth.requestFocus();
+                }
+            }
+        });
+        txtMonth.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                    txtYear.requestFocus();
+                }
+            }
+        });
+
+        txtYear.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                    chkImage.requestFocus();
+                }
+            }
+        });
+        saveButton.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                   // save();
+                    txtDocNo.requestFocus();
+                }
+            }
+        });
+        chkImage.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    Toolkit.getDefaultToolkit().beep();
+                    if(action.equals("save"))
+                      save();
+                    else if(action.equals("update"))
+                        update();
+                    txtDocNo.requestFocus();
+                }
+            }
+        });
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        txtDocNo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        investigationsCombo = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        txtDay = new javax.swing.JTextField();
+        saveButton = new javax.swing.JButton();
+        txtMonth = new javax.swing.JTextField();
+        txtYear = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        chkImage = new javax.swing.JCheckBox();
+
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/gdit/bundle/capture"); // NOI18N
+        jLabel1.setText(bundle.getString("patient.doc.no")); // NOI18N
+
+        jLabel2.setText(bundle.getString("investigation")); // NOI18N
+
+        investigationsCombo.setEditor(null);
+
+        jLabel3.setText(bundle.getString("investigation.date")); // NOI18N
+
+        txtDay.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtDayLostFocus(evt);
+            }
+        });
+
+        saveButton.setText(bundle.getString("save")); // NOI18N
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        txtMonth.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtMonthLostFocus(evt);
+            }
+        });
+
+        jLabel4.setText(bundle.getString("year")); // NOI18N
+
+        jLabel5.setText(bundle.getString("month")); // NOI18N
+
+        jLabel6.setText(bundle.getString("day")); // NOI18N
+
+        jLabel7.setText(bundle.getString("image")); // NOI18N
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtDocNo)
+                            .addComponent(investigationsCombo, 0, 321, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkImage)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtDay, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(saveButton)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtDocNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(investigationsCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(txtDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(chkImage))
+                .addGap(9, 9, 9)
+                .addComponent(saveButton)
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+        save();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void txtDayLostFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDayLostFocus
+        // TODO add your handling code here:
+        String day = txtDay.getText();
+        if (Integer.valueOf(day) > 0 & Integer.valueOf(day) <= 9) {
+            txtDay.setText("0" + day);
+        }
+    }//GEN-LAST:event_txtDayLostFocus
+
+    private void txtMonthLostFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMonthLostFocus
+        // TODO add your handling code here:
+        String month = txtMonth.getText();
+        if (Integer.valueOf(month) > 0 & Integer.valueOf(month) <= 9) {
+            txtMonth.setText("0" + month);
+        }
+    }//GEN-LAST:event_txtMonthLostFocus
+
+    public void save() {
+        try {
+            if (!check()) {
+                return;
+            }
+            PatientsDocHome patientDocHome = new PatientsDocHome();
+            PatientsDoc patientDoc = new PatientsDoc();
+            patientDoc.setDocNo(txtDocNo.getText());
+            String date = "";
+            if (Integer.valueOf(txtYear.getText()) < 1433) {
+                date = HijriCalendar.toGregString(txtDay.getText() + "/" + txtMonth.getText() + "/" + txtYear.getText());
+                System.out.println(date);
+            } else {
+                date = txtDay.getText() + "/" + txtMonth.getText() + "/" + txtYear.getText();
+            }
+            patientDoc.setInvestigationDate(date);
+            if(!chkImage.isSelected()){
+                 patientDoc.setInvestigation((Investigation) investModel.getSelectedItem());
+            }
+            patientDoc.setImg(chkImage.isSelected());
+            patientDoc.setUserId(userId);
+            patientDoc.setCreatedDate(new Date());
+            patientDocHome.persist(patientDoc);
+
+            PrintBarcode.print(String.valueOf(patientDoc.getId()), date, patientDoc.getInvestigation() == null ? "" : patientDoc.getInvestigation().getName(), txtDocNo.getText());
+            clear();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void update() {
+        try {
+            if (!check()) {
+                return;
+            }
+            PatientsDocHome patientDocHome = new PatientsDocHome();
+            PatientsDoc patientDoc = new PatientsDoc();
+            patientDoc.setDocNo(txtDocNo.getText());
+            String date = "";
+            if (Integer.valueOf(txtYear.getText()) < 1433) {
+                date = HijriCalendar.toGregString(txtDay.getText() + "/" + txtMonth.getText() + "/" + txtYear.getText());
+                System.out.println(date);
+            } else {
+                date = txtDay.getText() + "/" + txtMonth.getText() + "/" + txtYear.getText();
+            }
+            patientDoc.setInvestigationDate(date);
+            if(!chkImage.isSelected()){
+                 patientDoc.setInvestigation((Investigation) investModel.getSelectedItem());
+            }
+            patientDoc.setImg(chkImage.isSelected());
+       //     patientDoc.setUserId(userId);
+            patientDocHome.attachDirty(patientDoc);
+            PrintBarcode.print(String.valueOf(patientDoc.getId()), date, patientDoc.getInvestigation() == null ? "" : patientDoc.getInvestigation().getName(), txtDocNo.getText());
+            clear();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void clear() {
+        txtDay.setText("");
+        txtDocNo.setText("");
+        txtMonth.setText("");
+        txtYear.setText("");
+    }
+
+    private boolean check() {
+        try {
+            if (txtDay.getText().trim().equals("") || txtMonth.getText().trim().equals("") || txtYear.getText().trim().equals("")) {
+                String message = bundle.getString("parient.doc.date.required");
+                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                return false;
+            } else {
+                int day = 0;
+                int month = 0;
+                int year = 0;
+                try {
+                    day = Integer.valueOf(txtDay.getText());
+                    month = Integer.valueOf(txtMonth.getText());
+                    year = Integer.valueOf(txtYear.getText());
+                } catch (NumberFormatException ex) {
+                    String message = bundle.getString("patient.doc.date.false");
+                    JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                NsecHejraToGregorianHome dao = new NsecHejraToGregorianHome();
+                if (year > 1432) {
+
+                    try {
+                        String d = txtDay.getText() + "/" + txtMonth.getText() + "/" + txtYear.getText();
+                        if (isValidDate(d)) {
+                            return true;
+                        } else {
+                            String message = bundle.getString("patient.doc.date.false");
+                            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        String message = bundle.getString("patient.doc.date.false");
+                        JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                        return false;
+                    }
+
+
+                } else if (day > 30 || month > 12 || year > 1450 || year > 1450 || (day == 30 && !dao.checkHejriDate(day, month, year))) {
+                    String message = bundle.getString("patient.doc.date.false");
+                    JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+
+            }
+            if (txtDocNo.getText().trim().equals("")) {
+                String message = bundle.getString("parient.doc.no.required");
+                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            NsecHejraToGregorianHome.close();
+        }
+
+    }
+  
+    public boolean isValidDate(String inDate) {
+
+        if (inDate == null) {
+            return false;
+        }
+
+        //set the format to use as a constructor argument
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (inDate.trim().length() != dateFormat.toPattern().length()) {
+            return false;
+        }
+
+        dateFormat.setLenient(false);
+
+        try {
+            //parse the inDate parameter
+            Date date = dateFormat.parse(inDate.trim());
+            if (date.before(new Date())) {
+                return true;
+            } else {
+                return false;
+            }
+            // return true;
+        } catch (ParseException pe) {
+            return false;
+        }
+
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox chkImage;
+    private javax.swing.JComboBox investigationsCombo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JTextField txtDay;
+    private javax.swing.JTextField txtDocNo;
+    private javax.swing.JTextField txtMonth;
+    private javax.swing.JTextField txtYear;
+    // End of variables declaration//GEN-END:variables
+}

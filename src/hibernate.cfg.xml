@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="jndi.class">org.hibernate.SessionFactory</property>
+    <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+    <property name="hibernate.connection.password">capture</property>
+    <!--<property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.1.2:1521:orcl</property>-->
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+    <property name="hibernate.connection.username">capture</property>
+    <property name="hibernate.default_schema">capture</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <!--<property name="hibernate.hbm2ddl.auto">update</property>-->
+    <mapping resource="com/gdit/capture/entity/Rep.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Users.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Computers.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Capture.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Roles.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/UsersRoles.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Category.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Groups.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/UsersGroups.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Modules.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/ModulesRoles.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/RolesGroups.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/ComputersGroups.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Field.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/DocumentData.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Investigation.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/PatientsDoc.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/NsecHejraToGregorian.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/RolesReps.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/RolesCategories.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/BatchLog.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/UsersAudit.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Scanner.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Server.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/CaptureDocument.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/Disk.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/EDocuments.hbm.xml"/>
+    <mapping resource="com/gdit/capture/entity/EPages.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

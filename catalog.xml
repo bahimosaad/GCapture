@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://server01/lead/compressToTiff.asmx?WSDL" uri="xml-resources/web-service-references/compressToTiff/wsdl/server01/lead/compressToTiff.asmx.wsdl"/>
+    <system systemId="http://localhost/lead/compresstotiff.asmx?WSDL" uri="xml-resources/web-service-references/compresstotiff/wsdl/localhost/lead/compresstotiff.asmx.wsdl"/>
+    <system systemId="http://localhost/lead/compresstotiff.asmx?wsdl" uri="xml-resources/web-service-references/compresstotiff/wsdl/localhost/lead/compresstotiff.asmx.wsdl"/>
+    <system systemId="http://192.168.1.1/lead/compressToTiff.asmx?WSDL" uri="xml-resources/web-service-references/compressToTiff/wsdl/192.168.1.1/lead/compressToTiff.asmx.wsdl"/>
+    <system systemId="http://localhost/lead/compressToTiff.asmx?wsdl" uri="xml-resources/web-service-references/compressToTiff/wsdl/localhost/lead/compressToTiff.asmx.wsdl"/>
+    <system systemId="http://192.168.1.2/lead/compressToTiff.asmx?wsdl" uri="xml-resources/web-service-references/compressToTiff/wsdl/192.168.1.2/lead/compressToTiff.asmx.wsdl"/>
+    <system systemId="http://192.168.1.1/lead/compressToTiff.asmx?wsdl" uri="xml-resources/web-service-references/compressToTiff/wsdl/192.168.1.1/lead/compressToTiff.asmx.wsdl"/>
+</catalog>
