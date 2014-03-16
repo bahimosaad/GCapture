@@ -40,6 +40,7 @@ public class UsersGroupsHome {
         try {
             begin();
             getSession().persist(transientInstance);
+            commit();
             log.log(Level.WARNING, "persist successful");
         } catch (RuntimeException re) {
             log.log(Level.WARNING, "persist failed", re);
@@ -49,6 +50,13 @@ public class UsersGroupsHome {
 
     public List<UsersGroups> getAllUsersGroups() {
         Query q = getSession().createQuery("from UsersGroups");
+        List<UsersGroups> list = (List<UsersGroups>) q.list();
+        return list;
+    }
+    
+    public List<UsersGroups> getGroupsByUser(Users user) {
+        Query q = getSession().createQuery("from UsersGroups ug where ug.users = :user")
+                .setParameter("user", user);
         List<UsersGroups> list = (List<UsersGroups>) q.list();
         return list;
     }

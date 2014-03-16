@@ -219,17 +219,25 @@ public class QAMain extends JFrame implements Runnable {
 //                        IconNode node = (IconNode) root.children().nextElement();
 //                        DefaultMutableTreeNode lastIndexedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 //                        imageModel.removeNodeFromParent(lastIndexedNode);
+                        
+                        batch.setStatus(CaptureStatus.ExceptionMode);
+                        dao.merge(batch);
+                        
+                        Capture doc = (Capture) batch.getCaptures().toArray()[0];
                         UsersAudit audit = new UsersAudit();
                         audit.setBatchId(batch.getId());
                         audit.setUserId(user.getId());
                         audit.setModuleId(3);
                         audit.setAction(2);
+                        audit.setDocId(doc.getId());
                         audit.setStatus(CaptureStatus.ExceptionMode);
                         audit.setLocked(false);
                         audit.setAuditDate(dao.getSysDate());
                         UsersAuditHome auditHome = new UsersAuditHome();
                         auditHome.persist(audit);
                         auditHome.close();
+
+                        
                         root.removeAllChildren();
                         tree.updateUI();
                         //PrintBarcode.print(String.valueOf(batch.getName()), "KKUH        ", "Vascular Lab", "KSU");
@@ -295,8 +303,8 @@ public class QAMain extends JFrame implements Runnable {
                 if (batch != null) {
                     CaptureHome dao = new CaptureHome();
                     batch.setLocked(false);
-                    dao.attachDirty(batch);
-                    dao.updateLock(batch);
+                    dao.merge(batch);
+//                    dao.updateLock(batch);
 
                     imageModel.removeNodeFromParent((MutableTreeNode) root.children().nextElement());
                     tree.updateUI();
@@ -351,7 +359,7 @@ public class QAMain extends JFrame implements Runnable {
                         CaptureHome dao = new CaptureHome();
                         Capture itemCapture = item.getCapture();
                         itemCapture.setDeleted(true);
-                        dao.attachDirty(itemCapture);
+                        dao.merge(itemCapture);
 
                         imageModel.removeNodeFromParent(lastIndexedNode);
                         tree.updateUI();
@@ -360,7 +368,7 @@ public class QAMain extends JFrame implements Runnable {
                         Capture itemCapture = (Capture) lastIndexedNode.getUserObject();
                         CaptureHome dao = new CaptureHome();
                         itemCapture.setDeleted(true);
-                        dao.attachDirty(itemCapture);
+                        dao.merge(itemCapture);
 
                         imageModel.removeNodeFromParent(lastIndexedNode);
                         tree.updateUI();
@@ -372,8 +380,8 @@ public class QAMain extends JFrame implements Runnable {
                         Capture itemCapture = item.getCapture();
                         CaptureHome dao = new CaptureHome();
                         itemCapture.setDeleted(true);
-                        dao.attachDirty(itemCapture);
-                        dao.updateDeleted(itemCapture);
+                        dao.merge(itemCapture);
+//                        dao.updateDeleted(itemCapture);
 
                         imageModel.removeNodeFromParent(lastIndexedNode);
                         tree.updateUI();
@@ -424,6 +432,7 @@ public class QAMain extends JFrame implements Runnable {
                 try {
                     if (batch != null) {
 //                        CaptureHome dao = new CaptureHome();
+                        Capture doc = (Capture) batch.getCaptures().toArray()[0];
                         if (dao.isRefusedPages(batch)) {
                             String[] textMessages = new String[2];
                             textMessages[0] = bundle.getString("yes");
@@ -442,11 +451,16 @@ public class QAMain extends JFrame implements Runnable {
 //                                  dao.updateStatus(batch);
 //                                IconNode node = (IconNode) root.children().nextElement();
 //                                imageModel.removeNodeFromParent(node);
+
+                                batch.setStatus(CaptureStatus.IndexMode);
+                                dao.merge(batch);
+
                                 UsersAudit audit = new UsersAudit();
                                 audit.setBatchId(batch.getId());
                                 audit.setUserId(user.getId());
                                 audit.setModuleId(3);
                                 audit.setAction(1);
+                                audit.setDocId(doc.getId());
                                 audit.setStatus(CaptureStatus.IndexMode);
                                 audit.setLocked(false);
                                 audit.setAuditDate(dao.getSysDate());
@@ -454,6 +468,9 @@ public class QAMain extends JFrame implements Runnable {
                                 auditHome.persist(audit);
                                 //  auditHome.commit();
                                 auditHome.close();
+
+
+
                                 root.removeAllChildren();
                                 tree.updateUI();
                                 centerPanel.setImg(null);
@@ -465,11 +482,11 @@ public class QAMain extends JFrame implements Runnable {
                             }
 
                         } else {
-//                            batch.setStatus(CaptureStatus.IndexMode);
-//                            batch.setLocked(false);
-//                            batch.setName(docName);
-//                            batch.attachDirty(batch);
-//                            dao.updateStatus(batch);
+                            batch.setStatus(CaptureStatus.IndexMode);
+                            batch.setLocked(false);
+                            batch.setName(docName);
+                            dao.merge(batch);
+
                             //   
 //                            IconNode node = (IconNode) root.children().nextElement();
 //                            imageModel.removeNodeFromParent(node);
@@ -478,6 +495,7 @@ public class QAMain extends JFrame implements Runnable {
                             audit.setUserId(user.getId());
                             audit.setModuleId(3);
                             audit.setAction(1);
+                            audit.setDocId(doc.getId());
                             audit.setStatus(CaptureStatus.IndexMode);
                             audit.setLocked(false);
                             audit.setAuditDate(dao.getSysDate());
@@ -981,7 +999,7 @@ public class QAMain extends JFrame implements Runnable {
             fillTree();
             try {
                 batch.setLocked(false);
-                dao.attachDirty(batch);
+                dao.merge(batch);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -1427,7 +1445,7 @@ public class QAMain extends JFrame implements Runnable {
                 if (root.getChildCount() > 0) {
 //                    CaptureHome dao = new CaptureHome();
                     batch.setLocked(false);
-                    dao.attachDirty(batch);
+                    dao.merge(batch);
 //                    dao.updateLock(batch);
 
                 }
@@ -1458,7 +1476,7 @@ public class QAMain extends JFrame implements Runnable {
 
                     if (root.children().hasMoreElements()) {
                         batch.setLocked(false);
-                        dao.attachDirty(batch);
+                        dao.merge(batch);
 //                        dao.updateLock(batch);
 
                     }

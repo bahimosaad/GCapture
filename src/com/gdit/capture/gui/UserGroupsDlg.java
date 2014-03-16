@@ -100,7 +100,8 @@ public class UserGroupsDlg extends javax.swing.JDialog {
         //this.currentGroup = groups;
         txtUserName.setText(user.getUserName());
         //addBtn.setText(bundle.getString("edit"));
-        Set<UsersGroups> rgs = user.getUsersGroupses();
+        UsersGroupsHome ugHome = new UsersGroupsHome();
+        List<UsersGroups> rgs = ugHome.getGroupsByUser(user);
         clearAllChkBoxes();
          
         for (UsersGroups rg : rgs) {
@@ -111,6 +112,7 @@ public class UserGroupsDlg extends javax.swing.JDialog {
             ckBox.setSelected(true);
             chkList.set(index, ckBox);
             groupsChkList.setListData(chkList.toArray());
+          
             pack();
         }
     }
@@ -194,12 +196,13 @@ public class UserGroupsDlg extends javax.swing.JDialog {
                     Groups group = groups.get(i);
                     rg.setGroups(group);
                     usersGroups.add(rg);
+//                    ugHome.persist(rg);
                 }
                  
             }
-            ugHome.deleteUserGroups(user);
+//            ugHome.deleteUserGroups(user);
           
-//            user.setUsersGroupses(usersGroups);
+            user.setUsersGroupses(usersGroups);
             dao.merge(user);
             
             this.dispose();

@@ -56,9 +56,9 @@ public class QAProductivityPanel extends javax.swing.JPanel {
 
      private void init() {
         UsersAuditHome dao = new UsersAuditHome();
-        List<Object[]> data = dao.getUserProductivity(0, "0",module); 
-        model = new DataTableModel(data); 
-        dataTable.setModel(model);
+//        List<Object[]> data = dao.getUserPagesProductivity(0, "0",module); 
+//        model = new DataTableModel( ); 
+//        dataTable.setModel(model);
       //  pagesTable.setModel(pagesModel);
         DefaultComboBoxModel usersModel = new DefaultComboBoxModel();
         UsersHome usersDao = new UsersHome();

@@ -6,9 +6,9 @@ package com.gdit.capture.test;
 
 import com.gdit.capture.entity.Capture;
 import com.gdit.capture.entity.CaptureHome;
+import com.gdit.capture.utils.FindBackupFile;
+import java.awt.font.NumericShaper;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -20,13 +20,8 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Map digits = new HashMap();
-        for (char i = 0; i <= 9; i++) {
-            digits.put( new Integer (i),new Character((char) (i + 1632)));
-        }
+         FindBackupFile bkup = new FindBackupFile();
+         String  path = bkup.findFile("4911966", new File("G:/"));
         
-       
-        System.out.println(digits.get(8));
-
     }
 }

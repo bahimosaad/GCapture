@@ -23,8 +23,12 @@ import com.gdit.capture.entity.FieldHome02;
 import com.gdit.capture.entity.Rep;
 import com.gdit.capture.entity.RepHome;
 import com.gdit.capture.entity.Users;
+import com.gdit.capture.entity.UsersAudit;
+import com.gdit.capture.entity.UsersAuditHome;
+import com.gdit.capture.gui.CategoriesDlg;
 import com.gdit.capture.model.CaptureStatus;
 import com.gdit.capture.model.CaptureTreeNode;
+import com.gdit.capture.model.IconNode;
 import com.gdit.capture.model.LazyLoadingTreeController;
 import com.gdit.capture.run.ImageGenerator;
 import com.gdit.gui.SharedGUIMethods;
@@ -60,7 +64,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,16 +88,24 @@ import javax.swing.tree.TreePath;
  */
 public class IndexingUserFrame02 extends javax.swing.JFrame {
 
+    private boolean dirty;
+    private IndexingUserFrame02 me;
+    private Rep rep;
+
     /**
      * Creates new form IndexingUserFrame02
      */
-    public IndexingUserFrame02(Category cat) {
+    public IndexingUserFrame02(Category cat, Users user) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            rightDirection = true;
         } catch (Exception e) {
         }
+        me = this;
         this.category = cat;
+        this.rep = cat.getRep();
+        this.user = user;
+        this.dao = new CaptureHome();
+        rightDirection = true;
         preInitComponents();
         initComponents();
         postInitComponents();
@@ -106,6 +117,17 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
 
     private void postInitComponents() {
         releasResources();
+        imagePanel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        tree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
     }
 
     /**
@@ -271,11 +293,6 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
                 treeValueChanged(evt);
             }
         });
-        tree.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                treeKeyPressed(evt);
-            }
-        });
         treeScrolPan.setViewportView(tree);
 
         jSplitPane1.setLeftComponent(treeScrolPan);
@@ -391,11 +408,7 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
-        mainMenu.setFocusable(false);
-        mainMenu.setRequestFocusEnabled(false);
-
         fileMenu.setText("File");
-        fileMenu.setFocusable(false);
 
         openBatchMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openBatchMenuItem.setText("Open batch");
@@ -512,8 +525,12 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBTNActionPerformed
-        CaptureHome dao = new CaptureHome();
-        java.util.List<Capture> allBatches = dao.getWatingIndexing(category);
+
+        searchBatches();
+    }//GEN-LAST:event_searchBTNActionPerformed
+
+    private void searchBatches() {
+        java.util.List<Capture> allBatches = dao.getWatingIndexing(rep);
         DefaultListModel capturesLISTModel = new DefaultListModel();
         for (Capture batch : allBatches) {
             capturesLISTModel.addElement(batch);
@@ -523,14 +540,14 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
         batchesDialog.setModal(true);
         SharedGUIMethods.centerWindow(batchesDialog);
         batchesDialog.setVisible(true);
-    }//GEN-LAST:event_searchBTNActionPerformed
+    }
 
     private void batchesDlgShowBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_batchesDlgShowBTNActionPerformed
         releaseBatchBTNActionPerformed(evt);
         currentBatch = (Capture) waitingToIndexBatchesList.getSelectedValue();
         currentBatch.setLocked(true);
-        CaptureHome captureHome = new CaptureHome();
-        captureHome.merge(currentBatch);
+
+        dao.merge(currentBatch);
         try {
             releasResources();
 //            loadSelectedBatch();
@@ -582,6 +599,7 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
                 }
 
                 if (capture.getType() == Constants.PAGE_TYPE) {
+                    dirty = true;
                     Capture batch = capture.getCapture().getCapture();
                     Disk disk = batch.getDisk();
                     Category category = batch.getCategory();
@@ -685,6 +703,10 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
     }//GEN-LAST:event_autoBTNActionPerformed
 
     private void rotateLeftBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateLeftBTNActionPerformed
+        rotateLeft();
+    }//GEN-LAST:event_rotateLeftBTNActionPerformed
+
+    private void rotateLeft() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         if (selectedNode != null) {
             currentImage = ImageUtils.rotateImage(currentImage, -Constants.ROTATE_90);
@@ -693,9 +715,13 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
             imagePanel.setViewportView(imageCanvas);
         }
         rotationDirection++;
-    }//GEN-LAST:event_rotateLeftBTNActionPerformed
+    }
 
     private void rotateRightBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateRightBTNActionPerformed
+        rotateRight();
+    }//GEN-LAST:event_rotateRightBTNActionPerformed
+
+    private void rotateRight() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         if (selectedNode != null) {
             currentImage = ImageUtils.rotateImage(currentImage, Constants.ROTATE_90);
@@ -704,34 +730,46 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
             imagePanel.setViewportView(imageCanvas);
         }
         rotationDirection++;
-    }//GEN-LAST:event_rotateRightBTNActionPerformed
+    }
 
     private void saveDocumentDataBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDocumentDataBTNActionPerformed
+
         saveData();
     }//GEN-LAST:event_saveDocumentDataBTNActionPerformed
 
     private void releaseBatchBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_releaseBatchBTNActionPerformed
-        CaptureHome captureHome = new CaptureHome();
+
+        release();
+//        hideFieldsPanel();
+    }//GEN-LAST:event_releaseBatchBTNActionPerformed
+
+    private void release() {
         try {
             currentBatch.setLocked(false);
-            captureHome.merge(currentBatch);
+            dao.merge(currentBatch);
 
             boolean indexed = true;
-            for (Capture document : currentBatch.getCaptures()) {
-                if (document.getStatus() != CaptureStatus.INDEXED) {
-                    indexed = false;
-                    break;
-                }
-            }
-            if (indexed) {
+
+            List<Capture> documents = dao.getIndexedDocs(currentBatch, 5);
+            if (documents == null || documents.isEmpty()) {
                 currentBatch.setStatus(CaptureStatus.INDEXED);
-                captureHome.updateCaptureState(currentBatch);
+                dao.merge(currentBatch);
             }
+
+//            for (Capture document : currentBatch.getCaptures()) {
+//                if (document.getStatus() != CaptureStatus.INDEXED) {
+//                    indexed = false;
+//                    break;
+//                }
+//            }
+//            if (indexed) {
+//                currentBatch.setStatus(CaptureStatus.INDEXED);
+//                dao.updateCaptureState(currentBatch);
+//            }
         } catch (Exception e) {
         }
         releasResources();
-//        hideFieldsPanel();
-    }//GEN-LAST:event_releaseBatchBTNActionPerformed
+    }
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.out.println("Closing");
@@ -789,21 +827,29 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
-
-        if (evt.isControlDown() && evt.getKeyChar() == 'a') {
-            System.out.println("SAVE ");
+        System.out.println(evt.getKeyChar() + "    " + evt.getKeyCode());
+        if (evt.getKeyCode() == 112 || (evt.isControlDown() && evt.getKeyChar() != 'r') && evt.getKeyCode() == 82) {
+            rotateRight();
+        } else if (evt.getKeyCode() == 113 || (evt.isControlDown() && evt.getKeyChar() != 'l') && evt.getKeyCode() == 76) {
+            rotateLeft();
+        } else if (evt.getKeyCode() == 121 || (evt.isControlDown() && evt.getKeyChar() != 's') && evt.getKeyCode() == 83) {
+           System.out.println(dirty);
+            if (dirty) {
+                
+//                saveData();
+                 
+            } else {
+                JOptionPane.showMessageDialog(this, "يجب اختيار صورة ثم حفظ البيانات");
+                
+            }
+            dirty = false;
+        } else if (evt.getKeyCode() == 123 || evt.getKeyCode() == 27) {
+            release();
+        } else if (evt.getKeyCode() == 116 || (evt.isControlDown() && evt.getKeyChar() != 'o') && evt.getKeyCode() == 79) {
+            searchBatches();
         }
+
     }//GEN-LAST:event_formKeyPressed
-
-    private void treeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_treeKeyPressed
-        // TODO add your handling code here:
-        if (evt.isControlDown() && evt.getKeyChar() != 'a' && evt.getKeyCode() == 65) {
-            System.out.println("SAVE ");
-        } else if (evt.getKeyCode() == 121) {
-            System.out.println("F10");
-        }
-
-    }//GEN-LAST:event_treeKeyPressed
 
     private void loadData() {
         DocumentDataHome ddh = new DocumentDataHome();
@@ -846,8 +892,6 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
             document = currentDoc;
         }
         doc_id = document.getId();
-        // 2. get Enabled Fileds Components
-        // 3. get associated filed id
         for (int i = 0; i < allFields.size(); i++) {
             Field field = allFields.get(i);
             Component fieldComponent = fieldsComponents.get(i);
@@ -873,23 +917,38 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
                     documentDataHome.update(documentData);
                 }
 
-                // update Batch
-//                Capture batch = currentBatch.getCapture();
-//                batch.setStatus(CaptureStatus.INDEXED);
-//                captureHome.updateCaptureState(batch);
-                // update document
-                //update pages to
+
             }
         }
-        CaptureHome captureHome = new CaptureHome();
+
         document.setStatus(CaptureStatus.INDEXED);
-        captureHome.updateCaptureState(document);
+        dao.merge(document);
         DefaultMutableTreeNode docNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        DefaultMutableTreeNode next = docNode.getNextNode();
+
+
+        UsersAudit audit = new UsersAudit();
+        audit.setBatchId(document.getCapture().getId());
+        audit.setDocId(document.getId());
+        audit.setUserId(user.getId());
+        audit.setModuleId(5);
+        audit.setAction(1);
+        audit.setStatus(CaptureStatus.INDEXED);
+        audit.setLocked(false);
+        audit.setAuditDate(dao.getSysDate());
+        UsersAuditHome auditHome = new UsersAuditHome();
+        auditHome.persist(audit);
+        auditHome.close();
 
         clearGUI();
         currentDoc = null;
         treeModel.removeNodeFromParent((MutableTreeNode) docNode.getParent());
+//        tree.expandPath(getPath(next));
+        tree.setSelectionPath(getPath(next.getNextNode()));
+//        tree.setSelectionPath(getPath(next.getNextNode()));
         tree.updateUI();
+
+
     }
 
     private void updateZoomLBL() {
@@ -935,14 +994,17 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
         Node batchNode = new Node(currentBatch);
         rootNodeDS.addChild(batchNode);
 
-        Set<Capture> documents = currentBatch.getCaptures();
+        List<Capture> documents = dao.getIndexedDocs(currentBatch);
+        System.out.println("Docs " + currentBatch.getCaptures().size() + "  Indexed  " + documents.size());
+//        Set<Capture> documents = currentBatch.getCaptures();
+
         for (Capture document : documents) {
             Node documentNode = new Node(document);
             batchNode.addChild(documentNode);
             List<DocumentData> documentData = new DocumentDataHome02().getDocumentDataByID(document.getId());
             Collections.sort(documentData);
-            Node<List<DocumentData>> documentDataNode
-                    = new Node<List<DocumentData>>(documentData);
+            Node<List<DocumentData>> documentDataNode =
+                    new Node<List<DocumentData>>(documentData);
             documentNode.addChild(documentDataNode);
         }
     }
@@ -1004,34 +1066,28 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
         rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
         rootNode.setUserObject(currentBatch);
 
-        DefaultMutableTreeNode batchNode = new DefaultMutableTreeNode(currentBatch);
-        rootNode.add(batchNode);
-        for (Capture doc : currentBatch.getCaptures()) {
-            batchNode.add(new CaptureTreeNode(doc, treeModel));
+//        DefaultMutableTreeNode batchNode = new DefaultMutableTreeNode(currentBatch);
+//        rootNode.add(batchNode);
+
+//        docs = dao.getIndexedDocs(currentBatch);
+        docs = dao.getIndexedDocs(currentBatch, 5);
+        System.out.println("Docs " + currentBatch.getCaptures().size() + "  Indexed  " + docs.size());
+        for (Capture doc : docs) {
+
+            CaptureTreeNode docNode = new CaptureTreeNode(doc, treeModel);
+            rootNode.add(docNode);
+
 
         }
         tree.setModel(treeModel);
         LazyLoadingTreeController controller = new LazyLoadingTreeController(treeModel);
         tree.addTreeWillExpandListener(controller);
         treeModel.reload();
+        DefaultMutableTreeNode next = rootNode.getNextNode();
+        tree.expandPath(getPath(next));
+       
+        tree.setSelectionPath(getPath(next));
 
-//        Set<Capture> documents = currentBatch.getCaptures();
-//        for (Capture document : documents) {
-//            if (document.getStatus() != CaptureStatus.INDEXED) {
-//                DefaultMutableTreeNode documentNode =
-//                        new DefaultMutableTreeNode(document);
-//                rootNode.add(documentNode);
-//                Set<Capture> pages = document.getCaptures();
-//                for (Capture page : pages) {
-//                    DefaultMutableTreeNode pageNode =
-//                            new DefaultMutableTreeNode(page);
-//                    documentNode.add(pageNode);
-//                    pagesMap.put(page.getPath(), page);
-//                }
-//            }
-//        }
-//        treeModel.reload();
-//        tree.setSelectionPath(getPath(rootNode));
     }
 
     private void buildFieldsPanel() {
@@ -1039,12 +1095,24 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
         fieldsLabels = new ArrayList<JLabel>();
         errorFieldsLabels = new ArrayList<JLabel>();
 
-        final Map digits = new HashMap();
-        for (char i = 0; i <= 9; i++) {
-            digits.put(new Character((char) (i + 48)), new Character((char) (i + 1632)));
-        }
 
-        //for Type Arabic Numbers 
+        KeyListener keyListener = new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent event) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent event) {
+            }
+
+            @Override
+            public void keyTyped(KeyEvent event) {
+                char[] array = new char[]{event.getKeyChar()};
+
+                event.setKeyChar(array[0]);
+            }
+        };
+
         for (final Field field : allFields) {
             // lable
             JLabel fieldlabel = new JLabel(field.getName() + "(" + field.getAlias() + ")");
@@ -1058,7 +1126,6 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
 
             // component
             Component fieldComponent = null;
-            
             if (field.getType().equals(Constants.VAL_STRING)) {
                 fieldComponent = new JTextField();
             } else if (field.getType().equals(Constants.VAL_NUMBER)) {
@@ -1089,9 +1156,8 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
                     ((JTextField) fieldComponent).setLocale(new Locale("Ar"));
                     ((JTextField) fieldComponent).applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
                     ((JTextField) fieldComponent).setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-                    ((JTextField) fieldComponent).setAlignmentX(JTextField.RIGHT_ALIGNMENT);
+                    ((JTextField) fieldComponent).setAlignmentX(SwingConstants.RIGHT);
 
-//                    ((JTextField) fieldComponent).setHorizontalAlignment(SwingConstants.TRAILING);
                 }
             } else if (fieldComponent instanceof JComboBox) {
                 ((JComboBox) fieldComponent).setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -1100,7 +1166,7 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
 //            fieldComponent.addKeyListener(keyListener);
             fieldComponent.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
-                    treeKeyPressed(evt);
+                    formKeyPressed(evt);
                 }
             });
             fieldsComponents.add(fieldComponent);
@@ -1135,7 +1201,6 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
         if (!b) {
 //            JOptionPane.showMessageDialog(this, message);
 //            ((JTextField) evt.getSource()).requestFocus();
-
         }
     }
 
@@ -1180,6 +1245,7 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
 
     public void centerScreen() {
 
+
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenSize = tk.getScreenSize();
         int screenHeight = screenSize.height;
@@ -1188,7 +1254,9 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
         setLocation(0, 0);
 
     }
-
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -1286,5 +1354,7 @@ public class IndexingUserFrame02 extends javax.swing.JFrame {
     private Tree treeDS;
     private Node rootNodeDS;
     private Category category;
-    private String out = "";
+    private CaptureHome dao;
+    private List<Capture> docs;
+    private Users user;
 }

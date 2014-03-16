@@ -219,12 +219,36 @@ public class CaptureHome {
             
             List instances = session.createQuery("select  c.name from Capture c where c.type = 1 "
                     + "AND c.status = :status "
-                    + "AND c.category = :category "
+                    + "AND c.category = :category and c.deleted = false "
                     + "AND c.locked = :locked and c.barcoded =true  order by c.id"
                     + "")
                     .setParameter("status", status) //      .setParameter("category", category)
                     .setParameter("category", category)
                     .setParameter("locked", false).list();
+            return instances;
+
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+    public List<String> getBatcheNamesByStatus(Category category) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List instances = session.createQuery("select  c.name from Capture c where c.type = 1 "
+                    + "AND c.status = :status "
+                    + "AND c.category = :category "
+                    + "AND c.locked = :locked "
+                    + "and c.barcoded =true  "
+                    + "order by c.id"
+                    + "")
+//                    .setParameter("status", status) //      .setParameter("category", category)
+                    .setParameter("category", category)
+                    .setParameter("locked", false)
+                    .list();
             return instances;
 
         } catch (RuntimeException re) {
@@ -308,6 +332,22 @@ public class CaptureHome {
             return null;
         }
     }
+    
+    public List<Capture> getBatchesNullComputeres(int status) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> instances = session.createQuery("select c from Capture c where c.type = 1 "
+                    + "and c.deleted = 0 and c.computer  is null and "
+                    + "c.status = :status order by c.id ").setParameter("status", status).list();
+            return instances;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public List<Capture> getAllBatches(Category cat, int status) {
         try {
@@ -365,6 +405,45 @@ public class CaptureHome {
             List<Capture> instances = session.createQuery("select c from Capture c where "
                     + "c.type = 1 and c.status > 1 and c.deleted = 0 and c.saved = false "
                     + " order by c.id ").list();
+            return instances;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<Capture> getUnSavedRepBatches(short rep,int status ) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> instances = session.createQuery("select c from Capture c where "
+                    + "c.type = 1 and c.rep.id = :rep and c.status =:status and c.deleted = 0 "
+                    + ""
+                    + " order by c.id ")
+                    .setParameter("rep", rep)
+                    .setParameter("status", status)
+                    .list();
+            return instances;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<Capture> getUnCopyBatches(short rep,int status ) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> instances = session.createQuery("select c from Capture c where "
+                    + "c.type = 1 and c.rep.id = :rep and c.status =:status and c.deleted = true "
+                    + " and c.copyStatus is null "
+                    + " order by c.id ")
+                    .setParameter("rep", rep)
+                    .setParameter("status", status)
+                    .list();
             return instances;
         } catch (Exception e) {
             e.printStackTrace();
@@ -446,16 +525,38 @@ public class CaptureHome {
         }
     }
 
-    public List<String> getUnBarcodedNames() {
+    public List<String> getUnBarcodedNames(Category cat) {
         try {
 //            begin();
             Session session = ApplicationSession.getSession();
             Transaction tx = session.beginTransaction();
             
-            List<String> instances = session.createQuery("select c.id from Capture c where c.type = 1 "
-                    + "and (barcode is null OR barcode <> 'NOTFOUND')  and c.deleted = 0  and c.id IN (select d.capture.id from Capture d where d.type = 2 and ( d.barcode is null "
-                    + "or d.barcode = 'null' ))"
-                    + " order by c.id ").list();
+            List<String> instances = session.createQuery("select c.name from Capture c where c.type = 1 "
+                    + "and c.category = :cat and  c.deleted= false and c.barcoded = false  "
+                    + " order by c.id ")
+                    .setParameter("cat", cat)
+                    .list();
+//        List<Capture> docs = new ArrayList<Capture>();
+//        for(Capture instance:instances){
+//            docs.add(instance.getCapture());
+//        }
+            return instances;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<Capture> getUnBarcoded(Category cat) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> instances = session.createQuery("select c from Capture c where c.type = 1 "
+                    + "and c.category = :cat and  c.deleted = false and c.barcoded = false  "
+                    + " order by c.id ")
+                    .setParameter("cat", cat)
+                    .list();
 //        List<Capture> docs = new ArrayList<Capture>();
 //        for(Capture instance:instances){
 //            docs.add(instance.getCapture());
@@ -688,6 +789,29 @@ public class CaptureHome {
             throw re;
         }
     }
+    public Capture findByName(String name, Category category) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List instances = session.createQuery("select c from Capture c where c.name = :name "
+                    + "and c.category = :category   "
+                    + "and c.type = 1 and c.deleted = 0 ")
+                    .setParameter("category", category)
+//                    .setParameter("status", status)
+                    .setParameter("name", name).list();
+            if (instances != null && instances.size() > 0) {
+                return (Capture) instances.get(0);
+            } else {
+                return null;
+            }
+
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
 
     public List<String> findByNameStr(String name, int status, Category category) {
         try {
@@ -714,7 +838,7 @@ public class CaptureHome {
             
             List instances = session.createQuery("select UPPER(c.name) from Capture c where "
                     + "c.name LIKE :name  AND c.type = 1 AND c.category = :category AND "
-                    + "c.deleted = false AND c.status = :status AND  "
+                    + "c.deleted = false AND c.status = :status   "
                     + " order by c.id")
                     .setParameter("name", "%" + name + "%")
                     .setParameter("status", status)
@@ -786,6 +910,29 @@ public class CaptureHome {
             throw re;
         }
     }
+    
+    public Capture findByNameAndBatch(String name, Capture parent) {
+        try {
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List instances = session.createQuery("select c from Capture c where "
+                    + "c.name = :name and c.capture.capture = :parent")
+                    .setParameter("name", name)
+                    .setParameter("parent", parent)
+                    .list();
+            if (instances != null && instances.size() > 0) {
+                return (Capture) instances.get(0);
+            } else {
+                return null;
+            }
+
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
 
     public List<Capture> getExceptionBatches() {
         try {
@@ -809,6 +956,7 @@ public class CaptureHome {
             
             List<Capture> instances = session.createQuery("select c from Capture c where c.capture IN "
                     + "(select c1 from Capture c1 where c1.capture = :batch)  "
+                    + "OR ( c.capture = :batch and c.type = 2 and c.blancked = true   )  "
                     + "  order by c.id").setParameter("batch", batch).list();
             return instances;
         } catch (Exception ex) {
@@ -939,14 +1087,17 @@ public class CaptureHome {
         return instances;
     }
 
-    public List<String> getUnOcredBatcheNames() {
+    public List<String> getUnOcredBatcheNames(Category cat) {
         Session session = ApplicationSession.getSession();
             Transaction tx = session.beginTransaction();
             
         List<String> instances = session.createQuery("select b.name from Capture b where "
+                + "b.category = :cat and "
                 + "(select count(d) from Capture d where d.capture =b and d.type = 2) <=1 "
                 + "AND b.type = 1 and b.deleted = false  "
-                + "AND b.id not IN (select l.batchId from BatchLog l ) order by b.id").list();
+                + " order by b.id")
+                .setParameter("cat", cat)
+                .list();
         return instances;
     }
 
@@ -1031,8 +1182,11 @@ public class CaptureHome {
             
             List instances = session.createQuery("select c from Capture c where "
                     + "c.type = :type AND "
-                    + "c.status = :status AND "
-                    + "c.locked = :locked").setParameter("type", 1).setParameter("status", CaptureStatus.IndexMode).setParameter("locked", false).list();
+                    + "c.status = 4 AND "
+                    + "c.locked = :locked")
+                    .setParameter("type", 1)
+//                    .setParameter("status", CaptureStatus.IndexMode)
+                    .setParameter("locked", false).list();
             return instances;
         } catch (RuntimeException re) {
             //     log.log(Level.WARNING, "get failed", re);
@@ -1048,13 +1202,36 @@ public class CaptureHome {
             
             List instances = session.createQuery("select c from Capture c where "
                     + "c.type = :type AND "
-                    + "c.status = :status AND "
+                    + "c.status = 4 AND "
                     + "c.category = :category AND "
                     + "c.locked = :locked")
                     .setParameter("type", 1)
-                    .setParameter("status", CaptureStatus.IndexMode)
+                   
                     .setParameter("locked", false)
                     .setParameter("category", cat)
+                    .list();
+            return instances;
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+    public List<Capture> getWatingIndexing(Rep rep) {
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List instances = session.createQuery("select c from Capture c where "
+                    + "c.type = :type AND "
+                    + "c.status = 4 AND "
+                    + "c.rep = :rep AND "
+                    + "c.locked = :locked")
+                    .setParameter("type", 1)
+                   
+                    .setParameter("locked", false)
+                    .setParameter("rep", rep)
                     .list();
             return instances;
         } catch (RuntimeException re) {
@@ -1622,6 +1799,134 @@ public class CaptureHome {
             throw re;
         }
     }
+    
+     public List<Capture> getIndexedDocs(Capture batch){
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> batches = (List<Capture>)  session.createQuery("select c from Capture c "
+                    + "where    c.capture = :batch and c.deleted = 0 "
+                    + "and c.type = 2 and c.status <= 4 " 
+                    + "order by c.id ")
+                    .setParameter("batch", batch)
+                                    .list() ;
+            return batches;
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+     
+     public List<Capture> getIndexedDocs(Capture batch,int status){
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> batches = (List<Capture>)  session.createQuery("select c from Capture c "
+                    + "where    c.capture = :batch and c.deleted = 0 "
+                    + "and c.type = 2 and c.status <= :status "
+                    + "and c.id not in (select distinct d.docId from DocumentData d) " 
+                    + "order by c.id ")
+                    .setParameter("batch", batch)
+                    .setParameter("status", status)
+                                    .list() ;
+            return batches;
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+     
+     public List<Capture> getEmptySeperatedDocs(){
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> batches = (List<Capture>)  session.createQuery("select c from Capture c "
+                    + "where c.type = 2 and c.deleted = 0 "
+                    + "and c.status = 2 and c.path LIKE '%page%' "
+                    + "and (select count(p) from Capture p where  p.capture = c) <= 0 " 
+                    + "order by c.capture ") 
+                    .list() ;
+            return batches;
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+     
+     public List<Capture> getMissedSeperated(Rep rep,int status,int count){
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> batches = (List<Capture>)  session.createQuery("select c from Capture c "
+                    + "where c.type =1 and c.deleted = false and  c.status = :status "
+                    + "and  c.rep =:rep and c.captures.size <= :count "
+                    + "order by c.id") 
+                    .setParameter("status", status)
+                    .setParameter("rep", rep)
+                    .setParameter("count", count)
+                    .list() ;
+            return batches;
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+     
+     
+     
+     
+     
+     public List<Capture> getWrongSeperatedDocs(Capture batch){
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+            List<Capture> batches = (List<Capture>)  session.createQuery("select c from Capture c "
+                    + "where c.capture = :batch and  c.type =2  and c.deleted = false   "
+                    + "and  c.captures.size >1 "
+                    + "order by c.id") 
+                     .setParameter("batch", batch)
+                    .list() ;
+            return batches;
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+     
+     public  void unlock(){
+        try {
+            // TODO solve status to 6;
+//            begin();
+            Session session = ApplicationSession.getSession();
+            Transaction tx = session.beginTransaction();
+            
+              session.createQuery("update Capture c "
+                    + "set c.locked = false where type = 1 and locked = true ") 
+                    .executeUpdate() ;
+              tx.commit();
+            
+        } catch (RuntimeException re) {
+            //     log.log(Level.WARNING, "get failed", re);
+            throw re;
+        }
+    }
+     
+     
 //    private static final Logger log = Logger.getAnonymousLogger();
     private static final ThreadLocal<Session> session = new ThreadLocal<Session>();
     private static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();

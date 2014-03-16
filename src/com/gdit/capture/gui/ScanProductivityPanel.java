@@ -40,6 +40,7 @@ public class ScanProductivityPanel extends javax.swing.JPanel {
         this.locale = locale;
         initComponents();
         init();
+        
         changeScreenDirection(this, locale);
     }
 

@@ -20,6 +20,7 @@ public class AdminFrame extends JFrame {
     private JMenuItem mnuScanUsers;
     private JMenuItem mnuQAUsers;
     private JMenuItem mnuExpUsers;
+    private JMenuItem mnuIndexUsers;
     private JMenuItem mnuBatchData;
 
     public AdminFrame(Locale locale, ResourceBundle bundle) {
@@ -207,7 +208,7 @@ public class AdminFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 QAProductivityPanel panel = new QAProductivityPanel(bundle, locale, 3);
-                getContentPane().removeAll();
+                getContentPane().removeAll(); 
                 getContentPane().add(panel);
                 validate();
             }
@@ -220,6 +221,19 @@ public class AdminFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 QAProductivityPanel panel = new QAProductivityPanel(bundle, locale, 4);
+                getContentPane().removeAll();
+                getContentPane().add(panel);
+                validate();
+            }
+        });
+        
+        mnuIndexUsers = new JMenuItem();
+        mnuIndexUsers.setText("Index Users Productivity");
+        mnuIndexUsers.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                QAProductivityPanel panel = new QAProductivityPanel(bundle, locale, 5);
                 getContentPane().removeAll();
                 getContentPane().add(panel);
                 validate();
@@ -245,6 +259,7 @@ public class AdminFrame extends JFrame {
         mnuStatistics.add(mnuScanUsers);
         mnuStatistics.add(mnuQAUsers);
         mnuStatistics.add(mnuExpUsers);
+        mnuStatistics.add(mnuIndexUsers);
         mnuStatistics.add(mnuBatchData);
         greenMenuBar.add(mnuStatistics);
         greenMenuBar.add(mnuSettings);

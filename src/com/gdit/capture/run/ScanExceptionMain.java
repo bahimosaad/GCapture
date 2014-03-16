@@ -648,18 +648,22 @@ public class ScanExceptionMain extends JFrame {
 //                            }
 //                        }
 
+                    
+                    Capture doc = (Capture) batch.getCaptures().toArray()[0];
                     if (batch != null) {
                         UsersAudit audit = new UsersAudit();
                         audit.setBatchId(batch.getId());
                         audit.setUserId(user.getId());
                         audit.setModuleId(4);
                         audit.setAction(1);
+                        audit.setDocId(doc.getId());
                         audit.setStatus(CaptureStatus.IndexMode);
                         audit.setLocked(false);
                         audit.setAuditDate(dao.getSysDate());
                         UsersAuditHome auditHome = new UsersAuditHome();
                         auditHome.persist(audit);
                         auditHome.close();
+                        batch.setStatus(CaptureStatus.IndexMode);
                         imageModel.removeNodeFromParent((MutableTreeNode) root.children().nextElement());
                         tree.updateUI();
                         batch = null;

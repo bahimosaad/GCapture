@@ -91,7 +91,7 @@ public class LazyLoadingTreeController implements TreeWillExpandListener {
 		if (node.areChildrenLoaded()) {
 			return;
 		}
-		node.setChildren(createLoadingNode());
+//		node.setChildren(createLoadingNode());
 		SwingWorker<IconNode[], ?> worker = createSwingWorker(node);
 		worker.execute();
 	}

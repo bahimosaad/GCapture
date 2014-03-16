@@ -103,6 +103,7 @@ public class UnOcredBatchMain extends JFrame {
     private int zoom;
     private List<Capture> grands;
     private CaptureHome dao;
+
     /**
      * @param args the command line arguments
      */
@@ -118,18 +119,18 @@ public class UnOcredBatchMain extends JFrame {
         }
         properties = readSettingFile("C:/.capture/sysoptions.properties");
         //getBarcodes("C:/.capture\\barcode.properties");
-        CaptureHome dao = new CaptureHome();
+     
         grands = dao.getUnOcredBatches();
-        System.out.println("UnOcred "+grands.size());
+        System.out.println("UnOcred " + grands.size());
         init();
-        CaptureHome.close();
+//        CaptureHome.close();
         // fillTree();
     }
 
     private Properties readSettingFile(String filePath) {
         Properties prop = new Properties();
         try {
-          //  prop.load(new FileInputStream(filePath));
+            //  prop.load(new FileInputStream(filePath));
             return prop;
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,7 +197,6 @@ public class UnOcredBatchMain extends JFrame {
         vertSplit.addPane(barcodePanel);
         vertSplit.setProportions(ds1);
         refuseButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -231,7 +231,7 @@ public class UnOcredBatchMain extends JFrame {
                         //Capture.close();
                         IconNode pr = (IconNode) lastIndexedNode.getParent();
                         ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("icons/delete.jpg"));
-                        IconNode temp = new IconNode(item, false, scaleImage(icon.getImage(), 16, 16),cap.getName());
+                        IconNode temp = new IconNode(item, false, scaleImage(icon.getImage(), 16, 16), cap.getName());
                         int index = pr.getIndex(lastIndexedNode);
                         imageModel.insertNodeInto(temp, pr, index + 1);
                         imageModel.removeNodeFromParent(lastIndexedNode);
@@ -250,7 +250,7 @@ public class UnOcredBatchMain extends JFrame {
                         //Capture.close();
                         IconNode pr = (IconNode) lastIndexedNode.getParent();
                         ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("icons/delete.jpg"));
-                        IconNode temp = new IconNode(cap, true, scaleImage(icon.getImage(), 16, 16),cap.getName());
+                        IconNode temp = new IconNode(cap, true, scaleImage(icon.getImage(), 16, 16), cap.getName());
                         Enumeration en = lastIndexedNode.children();
                         while (en.hasMoreElements()) {
                             TreeNode n = (TreeNode) en.nextElement();
@@ -280,7 +280,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         logoutBtn.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
 //                me.dispose();
@@ -315,7 +314,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         selectBatchButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -326,7 +324,7 @@ public class UnOcredBatchMain extends JFrame {
                         dao.updateLock(batch);
                     }
 
-                    new UnOcredBatchDlg(me, user, locale, bundle, category,grands);
+                    new UnOcredBatchDlg(me, user, locale, bundle, category, grands);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
@@ -335,7 +333,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         deleteButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultMutableTreeNode lastIndexedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
@@ -353,7 +350,7 @@ public class UnOcredBatchMain extends JFrame {
                     if (lastIndexedNode.getUserObject() instanceof ImageTreeItem) {
                         ImageTreeItem item = (ImageTreeItem) lastIndexedNode.getUserObject();
                         Capture itemCapture = item.getCapture();
-                        CaptureHome dao = new CaptureHome(); 
+                        CaptureHome dao = new CaptureHome();
                         itemCapture.setDeleted(true);
                         dao.attachDirty(itemCapture);
                         CaptureHome.close();
@@ -391,7 +388,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         releaseBatchButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -420,7 +416,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         indexButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -452,12 +447,10 @@ public class UnOcredBatchMain extends JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
-                    
                 }
             }
         });
         tree.addTreeSelectionListener(new TreeSelectionListener() {
-
             @Override
             public void valueChanged(TreeSelectionEvent e) {
                 CaptureHome dao = null;
@@ -526,7 +519,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         changeCategoryButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 CategoriesDlg dlg = new CategoriesDlg(me, true, rep, user, bundle);
@@ -536,7 +528,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         rotateRight.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 int w = 800;
@@ -554,7 +545,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         rotateLeft.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 // centerPanel.rotate();
@@ -574,7 +564,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         zoomInBtn.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 // centerPanel.zoomin();
@@ -582,7 +571,6 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         zoomOutBtn.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 // centerPanel.zoomout();
@@ -590,13 +578,12 @@ public class UnOcredBatchMain extends JFrame {
             }
         });
         docButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 try {
                     DefaultMutableTreeNode localNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                    if (localNode.getUserObject() instanceof ImageTreeItem) { 
+                    if (localNode.getUserObject() instanceof ImageTreeItem) {
                         String docName = JOptionPane.showInputDialog(bundle.getString("barcode.enter.name"));
                         Capture newCapture = new Capture();
                         newCapture.setBarcode(docName);
@@ -618,7 +605,7 @@ public class UnOcredBatchMain extends JFrame {
                             //  Capture nodeCapture = imagesPathMap.get(selectedNode.getUserObject().toString()).getCapture();
                             Capture nodeCapture = ((ImageTreeItem) node.getUserObject()).getCapture();
                             nodeCapture.setCapture(newCapture);
-                            dao.attachDirty(nodeCapture); 
+                            dao.attachDirty(nodeCapture);
                             System.out.println(" Node      " + node.getUserObject().toString());
                             newParent.add(node);
                         }
@@ -649,12 +636,11 @@ public class UnOcredBatchMain extends JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
-                    CaptureHome.close(); 
+                    CaptureHome.close();
                 }
             }
         });
         saveButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -664,10 +650,10 @@ public class UnOcredBatchMain extends JFrame {
                     Image img = icon.getImage();
                     if (imgItem.getPath().endsWith(".jpg")) {
                         int w = zoom * 90;
-                         rotate(w,imgItem.getPath());
+                        rotate(w, imgItem.getPath());
                     } else {
                         int w = zoom * 90;
-                        rotate( w,imgItem.getPath());
+                        rotate(w, imgItem.getPath());
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(ScanExceptionMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -704,7 +690,7 @@ public class UnOcredBatchMain extends JFrame {
         }
     }
 
-    public void rotate( int angle,String path) {
+    public void rotate(int angle, String path) {
         try {
             if (path.endsWith(".jpg")) {
                 BufferedImage img = ImageIO.read(new File(path));
@@ -752,7 +738,6 @@ public class UnOcredBatchMain extends JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                
             }
             batch = null;
             imageModel.removeNodeFromParent((MutableTreeNode) root.children().nextElement());
@@ -1100,7 +1085,6 @@ public class UnOcredBatchMain extends JFrame {
     public void centerScreen() {
         setTitle("GDocScanQA");
         addWindowListener(new WindowAdapter() {
-
             public void windowClosing(WindowEvent e) {
                 if (root.getChildCount() > 0) {
                     CaptureHome dao = new CaptureHome();
@@ -1123,10 +1107,10 @@ public class UnOcredBatchMain extends JFrame {
 
     public static void main(String[] args) {
 //         TODO code application logic here
-//         QAMain main = new QAMain();
-//          main.setSize(800, 600);
+//        UnOcredBatchMain main = new UnOcredBatchMain();
+//        main.setSize(800, 600);
 //        main.centerScreen();
-//         main.setVisible(true);
+//        main.setVisible(true);
     }
 
     public Capture getBatch() {

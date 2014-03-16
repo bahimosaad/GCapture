@@ -39,6 +39,7 @@ public class BatchPanel extends javax.swing.JPanel {
         model.addElement("Scan Exception");
         model.addElement("Index");
         statusCombo.setModel(model);
+        dao = new CaptureHome();
     }
 
     /**
@@ -64,6 +65,7 @@ public class BatchPanel extends javax.swing.JPanel {
         chkLocked = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         txtBarcode = new javax.swing.JTextField();
+        unlockBtn = new javax.swing.JButton();
 
         jLabel1.setText("Batch ID");
 
@@ -93,6 +95,13 @@ public class BatchPanel extends javax.swing.JPanel {
 
         txtBarcode.setText(" ");
 
+        unlockBtn.setText("Un Lock All");
+        unlockBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unlockBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,13 +127,18 @@ public class BatchPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(searchButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                                .addComponent(saveButton))
+                                .addGap(41, 41, 41)
+                                .addComponent(saveButton)
+                                .addGap(0, 54, Short.MAX_VALUE))
                             .addComponent(txtBarcode, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(statusCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtId, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(77, 77, 77))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(unlockBtn)
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,14 +169,16 @@ public class BatchPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchButton)
                     .addComponent(saveButton))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(unlockBtn)
+                .addGap(19, 19, 19))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         try {
-            dao = new CaptureHome();
+            
             int id = txtId.getText().trim().equals("") ? 0 : Integer.valueOf(txtId.getText());
             String name = txtName.getText().trim().equals("") ? "0" : txtName.getText().trim();
             String barcode = txtBarcode.getText().trim();
@@ -205,6 +221,12 @@ public class BatchPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void unlockBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unlockBtnActionPerformed
+        // TODO add your handling code here:
+        
+        dao.unlock();
+    }//GEN-LAST:event_unlockBtnActionPerformed
+
     private void clear() {
         txtId.setText("");
         txtName.setText("");
@@ -235,5 +257,6 @@ public class BatchPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtBarcode;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
+    private javax.swing.JButton unlockBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -1048,8 +1048,8 @@ public class CaptureMain extends JFrame {
         try {
             scanning = true;
 //            CaptureHome dao = new CaptureHome();
-            List<Capture> pages = dao.getBatchPages(batch);
-            File file = new File(computer.getScanPath() + "/" + batch.getId());
+//            List<Capture> pages = dao.getBatchPages(batch);
+//            File file = new File(computer.getScanPath() + "/" + batch.getId());
 //            if (pages.size() > file.listFiles().length) {
 //                int diff = pages.size() - file.listFiles().length;
 //                List<Capture> deleted = dao.getBatchDeletedPages(batch);

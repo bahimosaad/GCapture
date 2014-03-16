@@ -19,7 +19,7 @@ import net.sourceforge.tess4j.Tesseract;
  *
  * @author Administrator
  */
-public class BlankDLG extends javax.swing.JDialog  {
+public class BlankDLG extends javax.swing.JDialog {
 
     /**
      * Creates new form BlankDLG
@@ -31,16 +31,14 @@ public class BlankDLG extends javax.swing.JDialog  {
         setVisible(true);
         this.rep = rep;
         try {
-           
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    
     public void run() {
         try {
-            
+
             CaptureHome dao = new CaptureHome();
 
 //            List<Capture> batches = dao.getUnBlankedbatches(rep, 2);
@@ -59,9 +57,10 @@ public class BlankDLG extends javax.swing.JDialog  {
                     thread.setBatch(batch);
                     thread.setDao(dao);
                     thread.run();
+                } else {
+                    output.append("Threr is no Baches to Seperate");
+                    break;
                 }
-                output.append("Threr is no Baches to Seperate");
-                break;
             }
 //            }
         } catch (Exception ex) {
@@ -130,9 +129,8 @@ public class BlankDLG extends javax.swing.JDialog  {
     private javax.swing.JLabel repName;
     // End of variables declaration//GEN-END:variables
 
-    class processBatch  {
+    class processBatch {
 
-         
         public void run() {
             try {
                 Category category = batch.getCategory();
@@ -175,6 +173,7 @@ public class BlankDLG extends javax.swing.JDialog  {
                 }
 
                 batch.setBarcoded(true);
+                batch.setLocked(false);
                 dao.attachDirty(batch);
             } catch (Exception ex) {
                 ex.printStackTrace();

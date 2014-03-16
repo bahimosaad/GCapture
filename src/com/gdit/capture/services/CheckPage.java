@@ -33,7 +33,7 @@ public class CheckPage {
         try {
             while (true) {
 //                List<Capture> batches = dao.getUnSavedBatches();
-                List<Capture> batches = dao.getUnSavedBatches();
+                List<Capture> batches = dao.getUnSavedRepBatches( new Short("181"),4);
                 //555122
                 //555633 //864929
                 //547239
@@ -56,7 +56,7 @@ public class CheckPage {
                         scanFile = new File(disk.getPath() + "/scan/" + batch.getId());
                         viewFile = new File(disk.getPath() + "/view/" + batch.getId());
                         nativeFile = new File("\\\\" + batch.getComputer().getName() + "/141/" + batch.getId());
-                        localFile = new File("G:/" + batch.getComputer().getName() + "/01072013/" + batch.getId());
+                        localFile = new File("G:/" + batch.getComputer().getName() + "/31072013/" + batch.getId());
 
                     } else {
                         scan = disk.getPath() + "/" + category.getId() + "/scan/" + batch.getId();
@@ -64,7 +64,7 @@ public class CheckPage {
                         scanFile = new File(disk.getPath() + "/" + category.getId() + "/scan/" + batch.getId());
                         viewFile = new File(disk.getPath() + "/" + category.getId() + "/view/" + batch.getId());
                         nativeFile = new File("\\\\" + batch.getComputer().getName() + "/141/" + batch.getId());
-                        localFile = new File("G:/" + batch.getComputer().getName() + "/01072013/" + batch.getId());
+                        localFile = new File("G:/" + batch.getComputer().getName() + "/31072013/" + batch.getId());
 
                     }
 
@@ -74,22 +74,22 @@ public class CheckPage {
                     if (pages == null || pages.size() < 2) {
                         continue;
                     }
-                    if (!scanFile.exists() || scanFile.listFiles().length == 0) {
-                        System.out.println(batch.getId() + " SCAN FOLDER IS EMPTY ");
-                        if (localFile.exists()) {
-                            FileUtils.copyDirectory(localFile, scanFile);
-                            soap.getCompressToTiffSoap().compressFolderFullPath(scan, view);
-                        } else if (nativeFile.exists()) {
-                            FileUtils.copyDirectory(nativeFile, scanFile);
-                            soap.getCompressToTiffSoap().compressFolderFullPath(scan, view);
-                        } else {
-                            batch.setRefuseNote("MISSED");
-                            // batch.setLocked(true);
-                            //  dao.attachDirty(batch);
-                        }
-                        continue;
-
-                    }
+//                    if (!scanFile.exists() || scanFile.listFiles().length == 0) {
+//                        System.out.println(batch.getId() + " SCAN FOLDER IS EMPTY ");
+//                        if (localFile.exists()) {
+//                            FileUtils.copyDirectory(localFile, scanFile);
+//                            soap.getCompressToTiffSoap().compressFolderFullPath(scan, view);
+//                        } else if (nativeFile.exists()) {
+//                            FileUtils.copyDirectory(nativeFile, scanFile);
+//                            soap.getCompressToTiffSoap().compressFolderFullPath(scan, view);
+//                        } else {
+//                            batch.setRefuseNote("MISSED");
+//                            // batch.setLocked(true);
+//                            //  dao.attachDirty(batch);
+//                        }
+//                        continue;
+//
+//                    }
                     if (!viewFile.exists() || pages.size() != scanFile.listFiles().length
                             || viewFile.listFiles().length != scanFile.listFiles().length) {
                         for (Capture doc : batch.getCaptures()) {
@@ -104,12 +104,12 @@ public class CheckPage {
                                     scanPage = new File(disk.getPath() + "/scan/" + batch.getId() + "/" + page.getPath());
                                     viewPage = new File(disk.getPath() + "/view/" + batch.getId() + "/" + page.getPath());
                                     nativePage = new File("\\\\" + batch.getComputer().getName() + "/141/" + batch.getId() + "/" + page.getPath());
-                                    localPage = new File("G:/" + batch.getComputer().getName() + "/01072013/" + batch.getId() + "/" + page.getPath());
+                                    localPage = new File("G:/" + batch.getComputer().getName() + "/31072013/" + batch.getId() + "/" + page.getPath());
                                 } else {
                                     scanPage = new File(disk.getPath()+"/"+category.getId()+ "/scan/" + batch.getId() + "/" + page.getPath());
                                     viewPage = new File(disk.getPath()+"/"+category.getId()+"/view/" + batch.getId() + "/" + page.getPath());
                                     nativePage = new File("\\\\" + batch.getComputer().getName() + "/141/" + batch.getId() + "/" + page.getPath());
-                                    localPage = new File("G:/" + batch.getComputer().getName() + "/01072013/" + batch.getId() + "/" + page.getPath());
+                                    localPage = new File("G:/" + batch.getComputer().getName() + "/31072013/" + batch.getId() + "/" + page.getPath());
                                 }
 
 

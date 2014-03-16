@@ -15,6 +15,9 @@
     <property name="batchId" type="long">
       <column name="BATCH_ID" precision="9" scale="0"/>
     </property>
+    <property name="docId" type="long">
+      <column name="DOC_ID" precision="10" scale="0"/>
+    </property>
     <property name="action" type="int">
       <column name="action" precision="3" scale="0"/>
     </property>

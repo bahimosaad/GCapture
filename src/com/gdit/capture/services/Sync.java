@@ -21,20 +21,9 @@ public class Sync {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        try {
-            CompressToTiff soap = new CompressToTiff(); 
-            File source = new File("F:/25022013"); 
-            for (File batch : source.listFiles()) {
-              //  if (source.length() != dest.length()) {
-                 for(String page:batch.list()){
-                    System.out.println("F:/25022013/" + batch.getName()+"/"+page);
-                     soap.getCompressToTiffSoap().compressImageFullPath("F:/25022013/" + batch.getName(), "F:/scan/" + batch.getName(),page);
-                 }
-                //}
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
 
-        }
+        CompressToTiff soap = new CompressToTiff();
+        soap.getCompressToTiffSoap().compressFolderFullPath("\\\\192.168.1.3\\181\\141\\scan\\2686840", "\\\\192.168.1.3\\181\\141\\view\\2686840");
+
     }
 }

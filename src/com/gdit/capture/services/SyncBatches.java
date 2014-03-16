@@ -6,8 +6,14 @@ package com.gdit.capture.services;
 
 import com.gdit.capture.entity.Capture;
 import com.gdit.capture.entity.CaptureHome;
+import com.gdit.capture.entity.Category;
+import com.gdit.capture.entity.CategoryHome;
+import com.gdit.capture.entity.Disk;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import org.tempuri.CompressToTiff;
 
 /**
  *
@@ -20,32 +26,47 @@ public class SyncBatches {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         // TODO code application logic here
-        CaptureHome dao = new CaptureHome();
-        List<Capture> batches = dao.getAllBatches(2185086L);
-        for (Capture batch : batches) {
-            File wDir = new File("W:/SCAN/" + batch.getId());
-            File fDir = new File("F:/SCAN/" + batch.getId());
-          if (wDir.exists()) {
-            //   System.out.println(batch.getId()+"   "+wDir.getAbsolutePath());
-                for (String page : wDir.list()) {
-                    File source = new File(wDir, page);
-                    File dest = new File(fDir, page);
-                    if ( !dest.exists() || dest.length() <4000) {
-                        InputStream in = new FileInputStream(source);
-                        System.out.println(batch.getId() + "   " + page);
-                        OutputStream out = new FileOutputStream(dest);
-                        byte[] buf = new byte[1024];
-                        int len;
-                        while ((len = in.read(buf)) > 0) {
-                            out.write(buf, 0, len);
+        try {
+            CaptureHome dao = new CaptureHome();
+//            CategoryHome catDao = new CategoryHome();
+//            Category cat = catDao.findById(141L);
+            List<Capture> batches = dao.getAllBatches(4);
+            CompressToTiff soap = new CompressToTiff();
+            
+            for (Capture batch : batches) {
+                Category category = batch.getCategory();
+                Disk disk = batch.getDisk();
+                File scan = null;
+                File view = null;
+                
+                 if (!category.isCreateFolder()) {
+                       
+                        scan = new File(disk.getPath() + "/scan/" + batch.getId());
+                        view = new File(disk.getPath() + "/view/" + batch.getId());
+                        
+                    } else {
+                        scan = new File(disk.getPath() + "/" + category.getId() + "/scan/" + batch.getId());
+                        view = new File(disk.getPath() + "/" + category.getId() + "/view/" + batch.getId());
+                       
+                    }
+                
+                 if (scan.exists() && view.exists()) {
+                    if (scan.list().length != view.list().length) {
+                        System.out.println(batch.getId() + "   " + scan.listFiles().length + "   " + view.listFiles().length);
+                        for (String page : scan.list()) {
+                            File pageFile = new File(view, page);
+                            if (!pageFile.exists()) {
+                                soap.getCompressToTiffSoap().compressImageFullPath(scan.getAbsolutePath(),
+                                        view.getAbsolutePath(), page);
+                                System.out.println(pageFile.getAbsolutePath());
+                            }
                         }
-
-                        in.close();
-                        out.close();
                     }
                 }
-            }
-        }
 
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

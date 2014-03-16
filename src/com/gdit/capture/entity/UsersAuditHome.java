@@ -158,7 +158,13 @@ public class UsersAuditHome {
                 + "from Users_Audit p , users u where p.user_id = u.id  "
                 + " and( p.user_id = :userId or :userId = 0) "
                 + "and (:date = '0' or to_Char(audit_date,'dd/MM/yyyy') = :date )   "
-                + "and action IN(1,2)  and p.module_id = :module  "
+                + "and action IN(1,2)  and p.module_id = :module    "
+                + " and doc_id not in"
+                + "("
+                + "select distinct doc_id  from DOCUMENT_DATA "
+                + "where field_val is null "
+                + "group by doc_id , field_val  "
+                + "having count(doc_id)=5) "
                 + "group by user_name , to_Char(audit_date,'dd/MM/YYYY') "
                 + "order by to_Char(audit_date,'dd/MM/YYYY') desc) t1 , "
                 + " (select user_name , to_Char(audit_date,'dd/MM/YYYY') d , count(1) p "
@@ -173,7 +179,6 @@ public class UsersAuditHome {
                 .setParameter("userId", userId)
                 .setParameter("date", date)
                 .setParameter("module", moduleId)
-                
                 .list();
     }
 
@@ -183,12 +188,12 @@ public class UsersAuditHome {
                 + " where p.user_id = u.id and c.B_ID = p.BATCH_ID "
                 + " and( p.user_id = :userId1 or :userId1 = 0) "
                 + "and (:date1 = '0' or to_Char(audit_date,'dd/MM/yyyy') = :date1 )   "
-                + "and action IN(1,2)  and p.module_id1 = :module  "
+                + "and action IN(1,2)  and p.module_id = :module  "
                 + "group by user_name , to_Char(audit_date,'dd/MM/YYYY') "
                 + "order by to_Char(audit_date,'dd/MM/YYYY') desc ")
                 .setParameter("userId1", userId)
                 .setParameter("date1", date)
-                .setParameter("module1", moduleId)
+                .setParameter("module", moduleId)
                 .list();
     }
 }

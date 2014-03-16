@@ -5,8 +5,8 @@
     <property name="jndi.class">org.hibernate.SessionFactory</property>
     <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
     <property name="hibernate.connection.password">capture</property>
-    <!--<property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.1.2:1521:orcl</property>-->
-    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.1.2:1521:orcl</property>
+    <!--<property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>-->
     <property name="hibernate.connection.username">capture</property>
     <property name="hibernate.default_schema">capture</property>
     <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>

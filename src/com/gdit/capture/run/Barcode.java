@@ -68,6 +68,7 @@ public class Barcode extends JFrame {
     private Server server;
     private BufferedImage currentBimg;
     private Capture doc;
+    private CaptureHome dao;
 
     /**
      * @param args the command line arguments
@@ -78,6 +79,7 @@ public class Barcode extends JFrame {
         this.bundle = bundle;
         this.user = user;
         this.rep = rep;
+        dao = new CaptureHome();
         if (rep != null && rep.getCategories().size() > 0) {
             category = (Category) rep.getCategories().toArray()[0];
         }
@@ -90,7 +92,8 @@ public class Barcode extends JFrame {
     public Barcode() {
         me = this;
         RepHome repHome = new RepHome();
-        rep = repHome.getAllRep().get(0);
+        rep = repHome.findById(new Short("141"));
+        dao = new CaptureHome();
         if (rep != null && rep.getCategories().size() > 0) {
             category = (Category) rep.getCategories().toArray()[0];
         }
@@ -180,11 +183,12 @@ public class Barcode extends JFrame {
 //      //  vertSplit.addPane(barcodePanel);
 //        vertSplit.setProportions(ds1);
         selectBatchButton.addActionListener(new ActionListener() {
+            
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    CaptureHome dao = new CaptureHome();
+                     dao = new CaptureHome();
                     dirty = false;
                     if (batch != null) {
                         
@@ -196,7 +200,7 @@ public class Barcode extends JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
-                    CaptureHome.close();
+//                    CaptureHome.close();
                 }
             }
         });
@@ -204,7 +208,7 @@ public class Barcode extends JFrame {
 
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                CaptureHome dao = null;
+               
                 zoom = 0;
                 try {
                     IconNode lastIndexedNode = (IconNode) tree.getLastSelectedPathComponent();
@@ -219,9 +223,9 @@ public class Barcode extends JFrame {
 //                        System.out.println("Image " + imageFile.length() + "   " + imageFile.getName());
                         Disk disk = batch.getDisk();
                         
-                        File file = new File("\\\\192.168.1.1/"+ disk.getViewPath()+"/"+ batch.getId() + "/" + img.getName() + ".tif");
+                        File file = new File(disk.getViewPath()+"/view/"+ batch.getId() + "/" + img.getName() + ".tif");
                         if(!file.exists()){
-                            file = new File("\\\\192.168.1.1/"+ disk.getPath()+"/"+ batch.getId() + "/" + img.getName() + ".tif");
+                            file = new File(disk.getPath()+"/scan/"+ batch.getId() + "/" + img.getName() + ".tif");
                         }
                         Image image = (Image) new TIFFReader(file).getPage(0);
                         currentBimg = ImageGenerator.createBufferedImage(image);
@@ -245,7 +249,7 @@ public class Barcode extends JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
-                    CaptureHome.close();
+//                    CaptureHome.close();
                 }
             }
         });
@@ -255,11 +259,17 @@ public class Barcode extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 IconNode localNode = (IconNode) tree.getLastSelectedPathComponent();
               //  if (localNode.getUserObject() instanceof DocTreeItem) {
-                    CaptureHome capHome = new CaptureHome();
+//                    CaptureHome capHome = new CaptureHome();
 //                    Capture capture = ((DocTreeItem) localNode.getUserObject()).getCapture();
                     String barcode = JOptionPane.showInputDialog(bundle.getString("barcode.enter.name"));
                     doc.setBarcode(barcode);
-                    capHome.merge(doc);
+                    doc.setBarcoded(true);
+                    dao.merge(doc);
+                    
+                    batch.setBarcoded(true);
+                    batch.setLocked(false);
+                    dao.merge(batch);
+                   
                     //  capHome.commit();
                     DocTreeItem docItem = new DocTreeItem(doc);
                     ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/barcode32.png"));
@@ -372,7 +382,7 @@ public class Barcode extends JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            CaptureHome.close();
+//            CaptureHome.close();
             //Capture.close();
         }
     }
@@ -654,11 +664,11 @@ public class Barcode extends JFrame {
 
             public void windowClosing(WindowEvent e) {
                 if (root.getChildCount() > 0) {
-                    CaptureHome dao = new CaptureHome();
+                   
                     batch.setLocked(false);
                     dao.attachDirty(batch);
                     dao.updateLock(batch);
-                    CaptureHome.close();
+                    
                 }
                 System.exit(0);
             }

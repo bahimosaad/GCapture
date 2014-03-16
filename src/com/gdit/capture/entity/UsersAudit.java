@@ -8,6 +8,7 @@ package com.gdit.capture.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+
 /**
  *
  * @author Bahi
@@ -19,6 +20,7 @@ public class UsersAudit implements Serializable{
     private boolean locked;
     private int status;
     private long batchId;
+    private Long docId;
     private int moduleId;
     private Date auditDate;
 
@@ -88,8 +90,15 @@ public class UsersAudit implements Serializable{
     public void setStatus(int status) {
         this.status = status;
     }
-    
-    
+
+    public Long getDocId() {
+        return docId;
+    }
+
+    public void setDocId(Long docId) {
+        this.docId = docId;
+    }
+     
 
     @Override
     public boolean equals(Object obj) {

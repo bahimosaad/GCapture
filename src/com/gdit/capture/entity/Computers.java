@@ -134,6 +134,11 @@ public class Computers  implements java.io.Serializable {
         this.scanPre = scanPre;
     }
 
+    @Override
+    public String toString() {
+        return   name  ;
+    }
+
     
    
 

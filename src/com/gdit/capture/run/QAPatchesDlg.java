@@ -56,14 +56,14 @@ public class QAPatchesDlg extends JDialog
             grands = dao.getBatcheNamesByStatus(CaptureStatus.QAMode, category);
             System.out.println("GRANDS    " + grands.size());
         } else if (parent instanceof Barcode) {
-            grands = dao.getUnBarcodedNames();
+            grands = dao.getUnBarcodedNames(category);
         } else if (parent instanceof ScanExceptionMain) {
             //  grands = dao.getBatchesByStatus(CaptureStatus.ExceptionMode, category);
             grands = dao.getBatcheNamesByStatus(CaptureStatus.ExceptionMode, category);
             // System.out.println("Grands "+grands.size());
         }  
         else if (parent instanceof UnOcredBatchMain) {
-            grands = dao.getUnOcredBatcheNames();
+            grands = dao.getUnOcredBatcheNames(category);
         }
         for (String grand : grands) {
             listModel.addElement(grand);
@@ -161,7 +161,7 @@ public class QAPatchesDlg extends JDialog
                         } else if (parent instanceof Barcode) {
                             String batchName = (String) list.getModel().getElementAt(index);
 //                            CaptureHome dao = new CaptureHome();
-                            Capture batch = dao.findByName(batchName, 2, category);
+                            Capture batch = dao.findByName(batchName, category);
                             batch.setLocked(true);
                             dao.attachDirty(batch);
 //                            dao.updateLock(batch);

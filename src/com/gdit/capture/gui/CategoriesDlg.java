@@ -17,6 +17,7 @@ import com.gdit.capture.entity.Users;
 import com.gdit.capture.run.CaptureMain;
 import com.gdit.capture.run.QAMain;
 import com.gdit.capture.run.ScanExceptionMain;
+import com.indexing.user.view.IndexingUserFrame02;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -136,6 +137,7 @@ public class CategoriesDlg extends javax.swing.JDialog {
             ((QAMain) parent).changeCategory(category);
         else if(parent instanceof ScanExceptionMain)
             ((ScanExceptionMain)parent).changeCategory(category);
+         
     }//GEN-LAST:event_selectButtonActionPerformed
 
     private void centerScreen() {
